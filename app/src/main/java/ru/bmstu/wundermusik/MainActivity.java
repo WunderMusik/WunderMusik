@@ -1,8 +1,6 @@
 package ru.bmstu.wundermusik;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -14,7 +12,8 @@ import ru.bmstu.wundermusik.models.Track;
 import ru.bmstu.wundermusik.models.parsers.JsonParser;
 import ru.bmstu.wundermusik.models.parsers.TrackJsonParser;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
+
 
 
     private void askTrack(long trackId) {
