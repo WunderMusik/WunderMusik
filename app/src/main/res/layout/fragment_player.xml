@@ -1,135 +1,119 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.bmstu.wundermusik.fragments.PlayerFragment">
+    tools:context="ru.bmstu.wundermusik.fragments.PlayerFragment"
+    android:background="@color/colorPrimaryDark">
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/colorPrimaryDark">
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/playerPrimaryDark">
+
+        <com.pkmmte.view.CircularImageView
+            android:id="@+id/imageviewHeader"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/icon_header"
+            app:border="true"
+            app:border_color="#EEEEEE"
+            app:border_width="2dp"
+            app:shadow="true" />
 
         <RelativeLayout
-            android:id="@+id/layoutHeader"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/colorPrimaryDark">
-
-            <ImageView
-                android:id="@+id/imageviewHeader"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/icon_header"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"/>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/imageviewHeader"
-                android:gravity="center_vertical"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:id="@+id/relativeLayout2">
-
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/artistView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:text="Artist - Track"
-                android:textStyle="italic"
-                android:layout_below="@+id/relativeLayout2"
-                android:layout_alignLeft="@+id/relativeLayout2"
-                android:layout_alignStart="@+id/relativeLayout2" />
-
-            <TextView
-                android:id="@+id/titleView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:text="Artist - Track"
-                android:textSize="@dimen/title_size"
-                android:layout_above="@+id/relativeLayout2"
-                android:layout_alignLeft="@+id/relativeLayout2"
-                android:layout_alignStart="@+id/relativeLayout2" />
-
-
-        </RelativeLayout>
-
-        <co.mobiwise.library.MaskProgressView
-            android:id="@+id/maskProgressView"
-            android:layout_width="400dp"
-            android:layout_height="400dp"
-            android:layout_centerHorizontal="true"
-            app:progressEmptyColor="@color/colorPrimary"
-            app:progressLoadedColor="@color/colorPrimaryLight"
-            app:coverMaskColor="#80000000"
-            app:durationTextColor="@color/colorPrimaryVeryLight"
-            app:durationTextSize="15sp"
-            app:coverImage="@drawable/cover"
-            app:progressHeight="4dp"
-            app:maxProgress="40"
-            app:currentProgress="23"
-            app:placeHolder="@drawable/cover"
-            android:layout_below="@+id/layoutHeader" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_below="@+id/layoutHeader"
-            android:background="@drawable/shadow"/>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/maskProgressView">
-
-
-            <Button
-                android:id="@+id/buttonControl"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ic_play_circle_filled_white_48dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"/>
-
-            <Button
-                android:id="@+id/buttonNext"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ic_skip_next_white_48dp"
-                android:layout_toRightOf="@+id/buttonControl"
-                android:layout_marginLeft="50dp"
-                android:layout_centerVertical="true"/>
-
-
-            <Button
-                android:id="@+id/buttonPrevious"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ic_skip_previous_white_48dp"
-                android:layout_toLeftOf="@+id/buttonControl"
-                android:layout_marginRight="50dp"
-                android:layout_centerVertical="true"/>
-
-
-        </RelativeLayout>
-
-        <ProgressBar android:id="@+id/playerProgress"
-            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/imageviewHeader"
+            android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_marginLeft="20dp"
+            android:id="@+id/relativeLayout2">
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/artistView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:text="Artist - Track"
+            android:textStyle="italic"
+            android:layout_below="@+id/relativeLayout2"
+            android:layout_alignLeft="@+id/relativeLayout2"
+            android:layout_alignStart="@+id/relativeLayout2" />
+
+        <TextView
+            android:id="@+id/titleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:text="Artist - Track"
+            android:textSize="@dimen/title_size"
+            android:layout_above="@+id/relativeLayout2"
+            android:layout_alignLeft="@+id/relativeLayout2"
+            android:layout_alignStart="@+id/relativeLayout2" />
 
     </RelativeLayout>
 
-</FrameLayout>
+    <co.mobiwise.library.MaskProgressView
+        android:id="@+id/maskProgressView"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_centerHorizontal="true"
+        app:progressEmptyColor="@color/colorPrimary"
+        app:progressLoadedColor="@color/colorPrimaryLight"
+        app:coverMaskColor="#80000000"
+        app:durationTextColor="@color/colorPrimaryVeryLight"
+        app:durationTextSize="15sp"
+        app:coverImage="@drawable/cover"
+        app:progressHeight="4dp"
+        app:maxProgress="40"
+        app:currentProgress="23"
+        app:placeHolder="@drawable/cover"
+        android:layout_below="@+id/layoutHeader" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/layoutHeader"
+        android:background="@drawable/shadow"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/maskProgressView">
+
+        <Button
+            android:id="@+id/buttonControl"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_play_circle_filled_white_48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+        <Button
+            android:id="@+id/buttonNext"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_skip_next_white_48dp"
+            android:layout_toRightOf="@+id/buttonControl"
+            android:layout_marginLeft="50dp"
+            android:layout_centerVertical="true"/>
+
+        <Button
+            android:id="@+id/buttonPrevious"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_skip_previous_white_48dp"
+            android:layout_toLeftOf="@+id/buttonControl"
+            android:layout_marginRight="50dp"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+</RelativeLayout>

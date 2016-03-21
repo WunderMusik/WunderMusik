@@ -10,4 +10,7 @@
     <color name="colorIcons">#212121</color>
     <color name="colorDivider">#B6B6B6</color>
     <color name="statusBarColor">#fbfbfd</color>
+
+
+    <color name="playerPrimaryDark">#6a348b</color>
 </resources>
