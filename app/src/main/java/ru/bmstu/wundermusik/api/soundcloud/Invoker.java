@@ -2,6 +2,8 @@ package ru.bmstu.wundermusik.api.soundcloud;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.ResultReceiver;
 
 import java.util.UUID;
 
@@ -9,68 +11,61 @@ import java.util.UUID;
  * Created by max on 22.03.16.
  */
 public class Invoker {
-    private Context context;
-    private String clientId, clientSecret;
-
-    private Invoker(Context context, String clientId, String clientSecret) {
-        this.context = context;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-    }
+    public final static String KEY_RESULT_CODE = "result_code";
+    public final static String KEY_QUERY_TYPE = "query_type";
 
     private final static Object lock = new Object();
     private static Invoker instance;
 
-    public static Invoker getInstance(Context context, String clientId, String clientSecret) {
+    private Context context;
+
+    private Invoker(Context context) {
+        this.context = context;
+    }
+
+    public static Invoker getInstance(Context context) {
         synchronized (lock) {
             if (instance == null) {
-                instance = new Invoker(context, clientId, clientSecret);
+                instance = new Invoker(context);
             }
         }
         return instance;
     }
 
-    public boolean connect() {
-        return false;
+    private long generateRequestID() {
+        return UUID.randomUUID().getLeastSignificantBits();
     }
 
-    public AccessToken queryToken() {
-        return new AccessToken("", "");
+    public void queryTrack(long trackId) {
+        Intent intent = makeIntent(InvokerService.TYPE_GET_TRACK);
+        intent.putExtra(InvokerService.KEY_TRACK_ID, trackId);
+        context.startService(intent);
     }
 
-    public String queryTracks() {
-        return "{}";
+    public void queryResource(String uri) {
+        Intent intent = makeIntent(InvokerService.TYPE_GET_RESOURCE);
+        intent.putExtra(InvokerService.KEY_RESOURCE_URI, uri);
+        context.startService(intent);
     }
 
-    public String queryTrack(long trackId) {
-        return "{}";
+    private Intent makeIntent(final String queryType) {
+        ResultReceiver serviceCallback = new ResultReceiver(null) {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                handleResponse(queryType, resultCode, resultData);
+            }
+        };
+
+        Intent intent = new Intent(context, InvokerService.class);
+        intent.putExtra(InvokerService.KEY_QUERY_CALLBACK, serviceCallback);
+        intent.putExtra(InvokerService.KEY_QUERY_TYPE, queryType);
+        return intent;
     }
 
-    public String queryResource(String uri) {
-        return "";
-    }
-
-    private class Result {
-        private long requestId;
-        private Intent intent;
-        private boolean isPending;
-
-        private Result(Intent intent, boolean isPending) {
-            this.requestId = UUID.randomUUID().getLeastSignificantBits();
-            this.intent = intent;
-            this.isPending = isPending;
-        }
-
-        public long getRequestId() {
-            return requestId;
-        }
-
-        public Intent getIntent() {
-            return intent;
-        }
-
-        public boolean isPending() {
-            return isPending;
-        }
+    private void handleResponse(String queryType, int resultCode, Bundle resultData) {
+        Intent resultBroadcast = new Intent(queryType);
+        resultBroadcast.putExtra(KEY_RESULT_CODE, resultCode);
+        resultBroadcast.putExtras(resultData);
+        context.sendBroadcast(resultBroadcast);
     }
 }

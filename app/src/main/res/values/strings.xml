@@ -1,7 +1,4 @@
 <resources>
     <string name="app_name">WunderMusik</string>
     <string name="action_settings">Settings</string>
-
-    <string name="soundcloud_client_id">d8578cce698b5417ede2f570586b2cf4</string>
-    <string name="soundcloud_client_secret">c79ec17262472d2c957ea0b4b4759337</string>
 </resources>
