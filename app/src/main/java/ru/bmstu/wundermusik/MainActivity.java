@@ -29,13 +29,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Click", Toast.LENGTH_SHORT).show();
+                askTrack(13158665);
             }
         });
 
         IntentFilter trackFilter = new IntentFilter(InvokerService.TYPE_GET_TRACK);
         registerReceiver(mTrackReceiver, trackFilter);
-        askTrack(13158665);
     }
 
     private void askTrack(long trackId) {

@@ -1,6 +1,5 @@
 package ru.bmstu.wundermusik.api.soundcloud.query;
 
-import android.os.Bundle;
 import android.os.ResultReceiver;
 
 import java.io.BufferedReader;
@@ -21,21 +20,22 @@ public class TrackQuery extends AbstractQuery {
         String route = Routes.TRACK + "/" + Long.toString(trackId);
         try {
             HttpURLConnection conn = openConnection(route, HttpMethod.GET);
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                String status = conn.getResponseMessage();
+                callback.send(StatusCode.ERROR, errorBundle(status));
+                return;
+            }
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             try {
                 String response = readResponse(reader);
-                Bundle data = new Bundle();
-                data.putString(KEY_DATA, response);
-                callback.send(StatusCode.OK, data);
+                callback.send(StatusCode.OK, successBundle(response));
             }
             finally {
                 conn.disconnect();
             }
         }
         catch (IOException e) {
-            Bundle errorData = new Bundle();
-            errorData.putString(KEY_ERROR, e.toString());
-            callback.send(StatusCode.ERROR, errorData);
+            callback.send(StatusCode.ERROR, errorBundle(e.toString()));
         }
     }
 }

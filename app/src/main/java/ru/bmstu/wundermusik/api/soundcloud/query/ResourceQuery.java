@@ -19,21 +19,22 @@ public class ResourceQuery extends AbstractQuery {
     public static void execute(ResultReceiver callback, String uri) {
         try {
             HttpURLConnection conn = openConnectionByURI(uri, HttpMethod.GET);
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                String status = conn.getResponseMessage();
+                callback.send(StatusCode.ERROR, errorBundle(status));
+                return;
+            }
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             try {
                 String response = readResponse(reader);
-                Bundle data = new Bundle();
-                data.putString(KEY_DATA, response);
-                callback.send(StatusCode.OK, data);
+                callback.send(StatusCode.OK, successBundle(response));
             }
             finally {
                 conn.disconnect();
             }
         }
         catch (IOException e) {
-            Bundle errorData = new Bundle();
-            errorData.putString(KEY_ERROR, e.toString());
-            callback.send(StatusCode.ERROR, errorData);
+            callback.send(StatusCode.ERROR, errorBundle(e.toString()));
         }
     }
 }
