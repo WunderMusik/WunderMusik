@@ -7,3 +7,5 @@ android:
     - extra-android-m2repository
     
 script: "./gradlew build"
+notifications:
+  slack: wundermusik:4eXUNFk7VqfdCedotyRZpQWn
