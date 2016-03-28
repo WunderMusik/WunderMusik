@@ -35,4 +35,5 @@ dependencies {
     compile 'com.github.iammert:MaskProgressView:1.0'
     androidTestCompile 'com.android.support:support-annotations:23.1.0'
     compile 'com.pkmmte.view:circularimageview:1.1'
+    compile 'com.malinskiy:superrecyclerview:1.1.3'
 }
