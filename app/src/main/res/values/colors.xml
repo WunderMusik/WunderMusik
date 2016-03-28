@@ -12,5 +12,7 @@
     <color name="statusBarColor">#fbfbfd</color>
 
 
-    <color name="playerPrimaryDark">#6a348b</color>
+    <color name="playerPrimaryDark">#cf36b174</color>
+    <color name="playerPrimaryLight">#cfa7dac1</color>
+    <color name="playerPrimaryFont">#FFFFFF</color>
 </resources>
