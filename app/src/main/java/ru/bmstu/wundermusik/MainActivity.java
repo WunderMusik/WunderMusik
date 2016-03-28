@@ -14,6 +14,11 @@ import ru.bmstu.wundermusik.models.parsers.TrackJsonParser;
 
 public class MainActivity extends AppCompatActivity {
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
 
 
     private void askTrack(long trackId) {
