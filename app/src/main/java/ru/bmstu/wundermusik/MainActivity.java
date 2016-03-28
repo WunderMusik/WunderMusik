@@ -1,5 +1,6 @@
 package ru.bmstu.wundermusik;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,30 +8,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import ru.bmstu.wundermusik.fragments.PlayerFragment;
-
-public class MainActivity extends AppCompatActivity implements PlayerFragment.PlayerActionsListener {
+public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (findViewById(R.id.fragment_container) != null) {
-
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
-                return;
-            }
-            // Create a new Fragment to be placed in the activity layout
-            PlayerFragment firstFragment = new PlayerFragment();
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
-        };
+        Button button = (Button) findViewById(R.id.button);
+        if (button != null) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
         Button btn = (Button) findViewById(R.id.superButton);
         if (btn != null) {
@@ -43,10 +37,5 @@ public class MainActivity extends AppCompatActivity implements PlayerFragment.Pl
 
             });
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
