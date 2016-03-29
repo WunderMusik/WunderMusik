@@ -17,7 +17,7 @@ import ru.bmstu.wundermusik.api.soundcloud.Invoker;
 import ru.bmstu.wundermusik.api.soundcloud.InvokerService;
 
 public class MainActivity extends AppCompatActivity {
-dweidjwie
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
