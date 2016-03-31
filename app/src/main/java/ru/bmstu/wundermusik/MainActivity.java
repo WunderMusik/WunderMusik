@@ -1,9 +1,5 @@
 package ru.bmstu.wundermusik;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import ru.bmstu.wundermusik.api.soundcloud.ApiCallback;
 import ru.bmstu.wundermusik.api.soundcloud.Invoker;
-import ru.bmstu.wundermusik.api.soundcloud.InvokerService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,23 +28,22 @@ public class MainActivity extends AppCompatActivity {
                 askTrack(13158665);
             }
         });
-
-        IntentFilter trackFilter = new IntentFilter(InvokerService.TYPE_GET_TRACK);
-        registerReceiver(mTrackReceiver, trackFilter);
     }
 
     private void askTrack(long trackId) {
         Invoker invoker = Invoker.getInstance(this);
-        invoker.queryTrack(trackId);
+        invoker.queryTrack(trackId, new ApiCallback() {
+            @Override
+            public void onResult(String data) {
+                Toast.makeText(MainActivity.this, "track received", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int code, String errorMsg) {
+                Toast.makeText(MainActivity.this, "track received", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
-    private final BroadcastReceiver mTrackReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Toast.makeText(MainActivity.this, "Received track", Toast.LENGTH_SHORT).show();
-        }
-    };
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
