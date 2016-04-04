@@ -26,7 +26,7 @@ android:
     - sys-img-armeabi-v7a-android-23
 
 before_script:
-  - echo no | android create avd --force --name test --target android-21 --abi $ANDROID_ABI
+  - echo no | android create avd --force --name test --target android-21 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window -gpu off -no-boot-anim &
   - android-wait-for-emulator
 
