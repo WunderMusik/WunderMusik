@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">WunderMusik</string>
     <string name="action_settings">Settings</string>
+
     <string name="logo_content_description">Whale knows</string>
+    <string name="check_internet">Online?</string>
+    <string name="no_net_status">No connection</string>
+    <string name="net_success_status">Success</string>
 </resources>

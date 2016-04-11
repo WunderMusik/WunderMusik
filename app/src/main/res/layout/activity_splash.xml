@@ -33,4 +33,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/splash_loader_margin_top"
         android:indeterminate="true"/>
+    <Button
+        android:id="@+id/check_btn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/splash_loader_margin_top"
+        android:text="@string/check_internet"
+        android:onClick="checkInternet"/>
+    <TextView
+        android:id="@+id/net_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/splash_text_margin_top"
+        android:textSize="@dimen/net_status_text_size"
+        android:gravity="center"
+        android:textColor="@color/splashText"/>
 </LinearLayout>
