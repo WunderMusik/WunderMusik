@@ -1,5 +1,6 @@
 package ru.bmstu.wundermusik;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,17 @@ public class StringListAdapter extends RecyclerView.Adapter<StringListAdapter.Vi
         this.data = data;
     }
 
+    // FIXME: 13.04.16 http://stackoverflow.com/questions/24471109/recyclerview-onclick
     @Override
     public StringListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_string, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.track_list_item, parent, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(view.getContext(), PlayerActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
         return new ViewHolder(view);
     }
 
@@ -69,7 +78,7 @@ public class StringListAdapter extends RecyclerView.Adapter<StringListAdapter.Vi
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.track_title);
+            textView = (TextView) itemView.findViewById(R.id.titleView);
         }
     }
 }

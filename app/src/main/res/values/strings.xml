@@ -9,4 +9,6 @@
 
     <string name="title_activity_player">PlayerActivity</string>
     <string name="title_activity_list">ListActivity</string>
+    <string name="search_button_text">Search</string>
+    <string name="search_view_hint">Artist, track</string>
 </resources>
