@@ -8,4 +8,5 @@
     <string name="net_success_status">Success</string>
 
     <string name="title_activity_player">PlayerActivity</string>
+    <string name="title_activity_list">ListActivity</string>
 </resources>

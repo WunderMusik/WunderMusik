@@ -33,6 +33,12 @@
         <activity
             android:name=".PlayerActivity"
             android:label="@string/title_activity_player"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <activity
+            android:name=".ListActivity"
+            android:label="@string/title_activity_list"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
