@@ -1,7 +1,13 @@
 package ru.bmstu.wundermusik.models;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by ali on 29.03.16.
@@ -10,72 +16,59 @@ public class Track implements Serializable {
     // track info
     private long id;
     private String title;
-    private Calendar createdDate;
     private long duration; // as I understand this property is measured in seconds
-    private String descrition;
-    private Calendar releaseDate;
-    private String genre;
     // track content info
     private String format;
     private long contentSize;
     private String streamUrl;
     private Singer singer;
 
-    public Track(long id, String title, Calendar createdDate, long duration, String descrition, Calendar releaseDate, String genre, String format, long contentSize, String streamUrl, Singer singer) {
-        this.id = id;
-        this.title = title;
-        this.createdDate = createdDate;
-        this.duration = duration;
-        this.descrition = descrition;
-        this.releaseDate = releaseDate;
-        this.genre = genre;
-        this.format = format;
-        this.contentSize = contentSize;
-        this.streamUrl = streamUrl;
-        this.singer = singer;
+    private Track(){}
+
+    public static Track parseSingleTrackInternal(JSONObject dataJsonObj){
+        Track res = new Track();
+        try {
+            res.id = dataJsonObj.getInt("id");
+            res.title = dataJsonObj.getString("title");
+            res.singer = Singer.parseSingleSingerInternal(dataJsonObj.getJSONObject("user"));
+            if (dataJsonObj.getBoolean("streamable")){
+                res.contentSize = dataJsonObj.getInt("original_content_size");
+                res.duration = dataJsonObj.getInt("duration");
+                res.format = dataJsonObj.getString("original_format");
+                res.streamUrl = dataJsonObj.getString("stream_url");
+            } else
+                res = null;
+        } catch (JSONException e) {
+            res = null;
+            e.printStackTrace();
+
+        }
+        return null;
     }
 
-    public long getId() {
-        return id;
+    public static Track parseSingleTrack(String strJson){
+        try {
+            JSONObject dataJsonObj = new JSONObject(strJson);
+            return parseSingleTrackInternal(dataJsonObj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Calendar getCreatedDate() {
-        return createdDate;
-    }
-
-    public long getDuration() {
-        return duration;
-    }
-
-    public String getDescrition() {
-        return descrition;
-    }
-
-    public Calendar getReleaseDate() {
-        return releaseDate;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public long getContentSize() {
-        return contentSize;
-    }
-
-    public String getStreamUrl() {
-        return streamUrl;
-    }
-
-    public Singer getSinger() {
-        return singer;
+    public static List<Track> parseMultipleTracks(String strJson){
+        List<Track> resultList = new ArrayList<>();
+        try {
+            JSONArray dataJsonObj = new JSONArray(strJson);
+            for (int i=0; i<dataJsonObj.length(); i++) {
+                Track track = parseSingleTrackInternal(dataJsonObj.getJSONObject(i));
+                if (track != null)
+                    resultList.add(track);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            return resultList;
+        }
     }
 }

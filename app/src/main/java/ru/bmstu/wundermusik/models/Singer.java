@@ -1,5 +1,8 @@
 package ru.bmstu.wundermusik.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +14,6 @@ public class Singer implements Serializable {
     private long id;
     private String name;
     private String avatarUrl;
-    private List<Track> trackList = new ArrayList<>();
 
     public Singer(long id, String name, String avatarUrl) {
         this.id = id;
@@ -31,7 +33,16 @@ public class Singer implements Serializable {
         return avatarUrl;
     }
 
-    public List<Track> getTrackList() {
-        return trackList;
+    public static Singer parseSingleSingerInternal(JSONObject dataJsonObj){
+        Singer res = null;
+        try {
+            res = new Singer(dataJsonObj.getInt("id"),
+                             dataJsonObj.getString("avatar_url"),
+                             dataJsonObj.getString("username"));
+        } catch (JSONException e) {
+            res = null;
+            e.printStackTrace();
+        }
+        return res;
     }
 }
