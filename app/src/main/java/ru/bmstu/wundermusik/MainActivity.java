@@ -12,8 +12,12 @@ import android.widget.Toast;
 
 import ru.bmstu.wundermusik.api.soundcloud.ApiCallback;
 import ru.bmstu.wundermusik.api.soundcloud.Invoker;
+import ru.bmstu.wundermusik.models.Track;
+
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -40,6 +44,8 @@ public class MainActivity extends AppCompatActivity  {
                 public void onClick(View view) {
                     TextView txtView = (TextView) findViewById(R.id.superUsefulTextbox);
                     txtView.setText("CHANGED TEXT");
+                    askTracksByName("asd");
+
                 }
 
             });
@@ -51,12 +57,30 @@ public class MainActivity extends AppCompatActivity  {
         invoker.queryTrack(trackId, new ApiCallback() {
             @Override
             public void onResult(String data) {
-                Toast.makeText(MainActivity.this, "track received", Toast.LENGTH_SHORT).show();
+                Track track = Track.parseSingleTrack(data);
+                if (track != null)
+                    Toast.makeText(MainActivity.this, "track received " + track.toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int code, String errorMsg) {
                 Toast.makeText(MainActivity.this, "track received", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void askTracksByName(String trackName) {
+        Invoker invoker = Invoker.getInstance(this);
+        invoker.queryTracksByName(trackName, new ApiCallback() {
+            @Override
+            public void onResult(String data) {
+                List<Track> tracks = Track.parseMultipleTracks(data);
+                Toast.makeText(MainActivity.this, "tracks were received " + tracks.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int code, String errorMsg) {
+                Toast.makeText(MainActivity.this, "tracks were received", Toast.LENGTH_SHORT).show();
             }
         });
     }

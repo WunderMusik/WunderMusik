@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import ru.bmstu.wundermusik.api.soundcloud.utils.Routes;
+
 /**
  * Created by ali on 29.03.16.
  */
@@ -35,7 +37,7 @@ public class Track implements Serializable {
                 res.contentSize = dataJsonObj.getInt("original_content_size");
                 res.duration = dataJsonObj.getInt("duration");
                 res.format = dataJsonObj.getString("original_format");
-                res.streamUrl = dataJsonObj.getString("stream_url");
+                res.streamUrl = dataJsonObj.getString("stream_url") + "?client_id=" + Routes.CLIENT_SECRET;
             } else
                 res = null;
         } catch (JSONException e) {
@@ -43,7 +45,7 @@ public class Track implements Serializable {
             e.printStackTrace();
 
         }
-        return null;
+        return res;
     }
 
     public static Track parseSingleTrack(String strJson){
@@ -70,5 +72,33 @@ public class Track implements Serializable {
         } finally {
             return resultList;
         }
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public long getContentSize() {
+        return contentSize;
+    }
+
+    public String getStreamUrl() {
+        return streamUrl;
+    }
+
+    public Singer getSinger() {
+        return singer;
     }
 }

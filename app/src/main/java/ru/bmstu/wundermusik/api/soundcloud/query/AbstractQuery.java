@@ -26,7 +26,7 @@ public abstract class AbstractQuery {
     public static HttpURLConnection openConnectionByURI(String uri, String method)
             throws IOException
     {
-        uri += ("?client_id=" + Routes.CLIENT_ID);
+        uri += ("client_id=" + Routes.CLIENT_ID);
         URL url = new URL(uri);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(method);
