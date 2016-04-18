@@ -33,6 +33,7 @@ before_script:
 script:
   - echo $ADB_INSTALL_TIMEOUT
   - android list target
+  - adb shell input keyevent 26
   - ./gradlew connectedCheck
 
 notifications:
