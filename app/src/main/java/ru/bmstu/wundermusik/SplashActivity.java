@@ -3,8 +3,6 @@ package ru.bmstu.wundermusik;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import static ru.bmstu.wundermusik.utils.System.isOnline;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -35,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (isOnline()) {
+                if (isOnline(context)) {
                     startMainActivity(context);
                 }
                 else {
@@ -43,12 +42,6 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
         }, 2000);
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     public void showCheckButton() {
@@ -59,7 +52,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void checkInternet(View view) {
-        if (isOnline()) {
+        if (isOnline(this)) {
             netStatus.setText(R.string.net_success_status);
             startMainActivity(SplashActivity.this);
         }
