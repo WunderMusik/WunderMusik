@@ -1,6 +1,7 @@
 package ru.bmstu.wundermusik;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.List;
@@ -46,6 +47,10 @@ public class MainActivity extends BaseRecycleActivity {
                 Toast.makeText(MainActivity.this, "tracks were received", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void searchButtonClick(View v) {
+        this.onRefresh();
     }
 
     @Override
