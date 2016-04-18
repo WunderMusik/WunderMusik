@@ -1,16 +1,13 @@
 package ru.bmstu.wundermusik;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import ru.bmstu.wundermusik.fragments.PlayerFragment;
 
-public class PlayerActivity extends AppCompatActivity implements PlayerFragment.PlayerActionsListener {
+public class PlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +24,38 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
             // Create a new Fragment to be placed in the activity layout
             PlayerFragment firstFragment = new PlayerFragment();
+            firstFragment.setArguments(getPlayerArguments());
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, firstFragment)
+                    .commit();
         }
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
+    private Bundle getPlayerArguments() {
+        Bundle args = new Bundle();
+        // TODO: serialize model to Bundle here
+        args.putString("title", "Rockstar");
+        args.putString("artist", "Nickelback");
+        return args;
+    }
 
+    public void onClickControl(View btn) {
+        PlayerFragment frag = (PlayerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+
+        frag.changeControlView(this);
+    }
+    public void onClickNext(View btn) {
+        PlayerFragment frag = (PlayerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+        frag.setTrack("Next-title", "Next-artist");
+    }
+    public void onClickPrevious(View btn) {
+        PlayerFragment frag = (PlayerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+        frag.setTrack("Previous-title", "Previous-artist");
     }
 }

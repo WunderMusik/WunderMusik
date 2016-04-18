@@ -79,7 +79,8 @@
                 android:layout_height="@dimen/player_button_size"
                 android:background="@drawable/ic_play_circle_filled_white_48dp"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:onClick="onClickControl"/>
 
             <Button
                 android:id="@+id/buttonNext"
@@ -88,7 +89,8 @@
                 android:background="@drawable/ic_skip_next_white_48dp"
                 android:layout_toRightOf="@+id/buttonControl"
                 android:layout_marginLeft="@dimen/player_button_margin"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:onClick="onClickNext"/>
 
             <Button
                 android:id="@+id/buttonPrevious"
@@ -97,7 +99,8 @@
                 android:background="@drawable/ic_skip_previous_white_48dp"
                 android:layout_toLeftOf="@+id/buttonControl"
                 android:layout_marginRight="@dimen/player_button_margin"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:onClick="onClickPrevious"/>
         </RelativeLayout>
 
     </RelativeLayout>
