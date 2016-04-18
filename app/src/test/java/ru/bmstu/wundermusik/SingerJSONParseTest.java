@@ -16,9 +16,9 @@ import ru.bmstu.wundermusik.models.parsers.*;
  */
 public class SingerJSONParseTest {
     private final String SINGLE_SINGER_JSON = "{\"id\": \"1\",  \"username\": \"Singer name\",  \"avatar_url\": \"http://www.avatar.url.com/avatar.png\"}";
-    private final String SINGLE_SINGER_AVATAR_URL ="Singer name";
+    private final String SINGLE_SINGER_AVATAR_URL ="http://www.avatar.url.com/avatar.png";
     private final long SINGLE_SINGER_ID = 359;
-    private final String SINGLE_SINGER_NAME ="http://www.avatar.url.com/avatar.png";
+    private final String SINGLE_SINGER_NAME ="Singer name";
 
     @Test
     public void CreateNewSingerTest() {
