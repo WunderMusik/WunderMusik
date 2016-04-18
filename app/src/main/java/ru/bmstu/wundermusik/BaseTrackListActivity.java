@@ -1,5 +1,6 @@
 package ru.bmstu.wundermusik;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,7 +21,10 @@ import java.util.List;
 import ru.bmstu.wundermusik.adapters.TrackListAdapter;
 import ru.bmstu.wundermusik.models.Track;
 
-public abstract class BaseRecycleActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, SwipeDismissRecyclerViewTouchListener.DismissCallbacks {
+public abstract class BaseTrackListActivity extends AppCompatActivity
+        implements
+        SwipeDismissRecyclerViewTouchListener.DismissCallbacks
+{
 
     private SuperRecyclerView          mRecycler;
     private TrackListAdapter mAdapter;
@@ -34,7 +38,7 @@ public abstract class BaseRecycleActivity extends AppCompatActivity implements S
         setContentView(getLayoutId());
 
         ArrayList<Track> list = new ArrayList<>();
-        mAdapter = new TrackListAdapter(list);
+        mAdapter = new TrackListAdapter(list, getApplicationContext());
 
         mRecycler = (SuperRecyclerView) findViewById(R.id.list);
         mLayoutManager = getLayoutManager();
@@ -48,9 +52,6 @@ public abstract class BaseRecycleActivity extends AppCompatActivity implements S
         }
         mHandler = new Handler(Looper.getMainLooper());
         mRecycler.setAdapter(mAdapter);
-
-        mRecycler.setRefreshListener(this);
-        mRecycler.setRefreshingColorResources(android.R.color.holo_orange_light, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_red_light);
     }
 
     protected abstract int getLayoutId();
@@ -59,14 +60,8 @@ public abstract class BaseRecycleActivity extends AppCompatActivity implements S
 
     protected abstract RecyclerView.LayoutManager getLayoutManager();
 
-    @Override
-    public void onRefresh() {
-        Log.d("Refresh", "Refresh");
-
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-            }
-        }, 2000);
+    protected void setAdapterContext (Context context) {
+        mAdapter.context = context;
     }
 
     protected void addSingleTrack(Track track) {

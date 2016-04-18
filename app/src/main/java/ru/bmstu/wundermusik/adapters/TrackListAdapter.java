@@ -1,11 +1,17 @@
 package ru.bmstu.wundermusik.adapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,29 +24,50 @@ import ru.bmstu.wundermusik.models.Track;
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.ViewHolder> {
 
     public ArrayList<Track> data;
+    public Context context;
 
-    public TrackListAdapter(ArrayList<Track> data) {
+    public TrackListAdapter(ArrayList<Track> data, Context context) {
         this.data = data;
     }
 
     @Override
     public TrackListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.track_list_item, parent, false);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Intent intent = new Intent(view.getContext(), PlayerActivity.class);
+                    view.getContext().startActivity(intent);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(TrackListAdapter.ViewHolder holder, int position) {
-        String title = data.get(position).getTitle(),
-                singer = data.get(position).getSinger().getName();
+        Track track = data.get(position);
+        String title = track.getTitle(),
+                singer = track.getSinger().getName(),
+                avatarUrl = track.getSinger().getAvatarUrl();
 
+
+        // FIXME: 19.04.16 Пока что падает
+        /*
+        if ((context != null) && (holder.avatarView != null) && (avatarUrl != null)) {
+            Picasso.with(context).load(avatarUrl).into(holder.avatarView);
+        }
+        */
         if (title != null) {
             holder.titleView.setText(title);
         }
-        // FIXME: 19.04.16 С исполнителем пока какая-то лажа. Поздно
-//        if (singer != null) {
-//            holder.artistView.setText(singer);
-//        }
+        if (singer != null) {
+            holder.artistView.setText(singer);
+        }
     }
 
     @Override
@@ -82,10 +109,13 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView titleView;
         public TextView artistView;
+        public ImageView avatarView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            titleView = (TextView) itemView.findViewById(R.id.artistView);
+            titleView = (TextView) itemView.findViewById(R.id.titleView);
+            artistView = (TextView) itemView.findViewById(R.id.artistView);
+            avatarView = (ImageView) itemView.findViewById(R.id.avatarView);
         }
     }
 }

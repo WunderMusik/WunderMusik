@@ -37,4 +37,5 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:23.1.0'
     compile 'com.pkmmte.view:circularimageview:1.1'
     compile 'com.malinskiy:superrecyclerview:1.1.3'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

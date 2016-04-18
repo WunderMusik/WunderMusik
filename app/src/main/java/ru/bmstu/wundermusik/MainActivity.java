@@ -1,5 +1,6 @@
 package ru.bmstu.wundermusik;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +15,7 @@ import ru.bmstu.wundermusik.models.Track;
 import ru.bmstu.wundermusik.models.parsers.JsonParser;
 import ru.bmstu.wundermusik.models.parsers.TrackJsonParser;
 
-public class MainActivity extends BaseRecycleActivity {
+public class MainActivity extends BaseTrackListActivity {
 
     private void askTrack(long trackId) {
         Invoker invoker = Invoker.getInstance(this);
@@ -53,6 +54,13 @@ public class MainActivity extends BaseRecycleActivity {
                 Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setAdapterContext(this);
     }
 
     public void searchButtonClick(View v) {
