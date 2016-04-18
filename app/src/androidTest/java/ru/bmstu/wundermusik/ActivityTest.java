@@ -44,9 +44,6 @@ public class ActivityTest extends ActivityInstrumentationTestCase2<MainActivity>
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        onView(withId(R.id.superUsefulTextbox)).check(matches(withText(MESSAGE_BEFORE)));
-        onView(withId(R.id.superButton)).perform(click());
-        onView(withId(R.id.superUsefulTextbox)).check(matches(withText(MESSAGE_AFTER)));
     }
 
 }
