@@ -7,13 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ru.bmstu.wundermusik.R;
 
 
 public class PlayerFragment extends Fragment {
-
-    private PlayerActionsListener mListener;
 
     public PlayerFragment() {
         // Required empty public constructor
@@ -27,34 +26,18 @@ public class PlayerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_player, container, false);
-    }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        View playerView = inflater.inflate(R.layout.fragment_player, container, false);
+        Bundle args = getArguments();
+        if (args != null) {
+            String title = args.getString("title");
+            String artist = args.getString("artist");
+
+            TextView titleView = (TextView) playerView.findViewById(R.id.titleView);
+            titleView.setText(title);
+            TextView artistView = (TextView) playerView.findViewById(R.id.artistView);
+            artistView.setText(artist);
         }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof PlayerActionsListener) {
-            mListener = (PlayerActionsListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement PlayerActionsListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface PlayerActionsListener {
-        void onFragmentInteraction(Uri uri);
+        return playerView;
     }
 }
