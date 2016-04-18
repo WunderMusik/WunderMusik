@@ -21,6 +21,9 @@ public class InvokerService extends IntentService {
     public final static String TYPE_GET_RESOURCE = "type_resource";
     public final static String KEY_RESOURCE_URI = "key_resource_uri";
 
+    public final static String TYPE_GET_TRACKS_BY_NAME = "type_get_tracks_by_name";
+    public final static String KEY_TRACK_NAME = "key_track_name";
+
     private ResultReceiver queryCallback;
     public InvokerService() {
         super("InvokerService");
@@ -37,6 +40,8 @@ public class InvokerService extends IntentService {
                     handleGetTrack(intent);
                 case TYPE_GET_RESOURCE:
                     handleGetResource(intent);
+                case TYPE_GET_TRACKS_BY_NAME:
+                    handleGetTracksByName(intent);
             }
         }
     }
@@ -45,6 +50,13 @@ public class InvokerService extends IntentService {
         long trackId = intent.getLongExtra(KEY_TRACK_ID, 0);
         if (trackId != 0) {
             TrackQuery.execute(queryCallback, trackId);
+        }
+    }
+
+    private void handleGetTracksByName(Intent intent) {
+        String trackName = intent.getStringExtra(KEY_TRACK_NAME);
+        if (trackName != null) {
+            TrackQuery.execute(queryCallback, trackName);
         }
     }
 
