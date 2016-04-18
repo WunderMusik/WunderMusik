@@ -25,54 +25,7 @@ public class Track implements Serializable {
     private String streamUrl;
     private Singer singer;
 
-    private Track(){}
-
-    public static Track parseSingleTrackInternal(JSONObject dataJsonObj){
-        Track res = new Track();
-        try {
-            res.id = dataJsonObj.getInt("id");
-            res.title = dataJsonObj.getString("title");
-            res.singer = Singer.parseSingleSingerInternal(dataJsonObj.getJSONObject("user"));
-            if (dataJsonObj.getBoolean("streamable")){
-                res.contentSize = dataJsonObj.getInt("original_content_size");
-                res.duration = dataJsonObj.getInt("duration");
-                res.format = dataJsonObj.getString("original_format");
-                res.streamUrl = dataJsonObj.getString("stream_url") + "?client_id=" + Routes.CLIENT_SECRET;
-            } else
-                res = null;
-        } catch (JSONException e) {
-            res = null;
-            e.printStackTrace();
-
-        }
-        return res;
-    }
-
-    public static Track parseSingleTrack(String strJson){
-        try {
-            JSONObject dataJsonObj = new JSONObject(strJson);
-            return parseSingleTrackInternal(dataJsonObj);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static List<Track> parseMultipleTracks(String strJson){
-        List<Track> resultList = new ArrayList<>();
-        try {
-            JSONArray dataJsonObj = new JSONArray(strJson);
-            for (int i=0; i<dataJsonObj.length(); i++) {
-                Track track = parseSingleTrackInternal(dataJsonObj.getJSONObject(i));
-                if (track != null)
-                    resultList.add(track);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } finally {
-            return resultList;
-        }
-    }
+    public Track(){}
 
     public long getId() {
         return id;
@@ -100,5 +53,33 @@ public class Track implements Serializable {
 
     public Singer getSinger() {
         return singer;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public void setContentSize(long contentSize) {
+        this.contentSize = contentSize;
+    }
+
+    public void setStreamUrl(String streamUrl) {
+        this.streamUrl = streamUrl;
+    }
+
+    public void setSinger(Singer singer) {
+        this.singer = singer;
     }
 }

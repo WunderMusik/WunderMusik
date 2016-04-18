@@ -1,18 +1,16 @@
 package ru.bmstu.wundermusik;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import ru.bmstu.wundermusik.api.soundcloud.ApiCallback;
 import ru.bmstu.wundermusik.api.soundcloud.Invoker;
+import ru.bmstu.wundermusik.models.parsers.JsonParser;
 import ru.bmstu.wundermusik.models.Track;
+import ru.bmstu.wundermusik.models.parsers.TrackJsonParser;
 
 import android.widget.Button;
 import android.widget.TextView;
@@ -57,7 +55,8 @@ public class MainActivity extends AppCompatActivity  {
         invoker.queryTrack(trackId, new ApiCallback() {
             @Override
             public void onResult(String data) {
-                Track track = Track.parseSingleTrack(data);
+                JsonParser<Track> trackJsonParser = new TrackJsonParser();
+                Track track = trackJsonParser.parseSingleObject(data);
                 if (track != null)
                     Toast.makeText(MainActivity.this, "track received " + track.toString(), Toast.LENGTH_SHORT).show();
             }
@@ -74,7 +73,8 @@ public class MainActivity extends AppCompatActivity  {
         invoker.queryTracksByName(trackName, new ApiCallback() {
             @Override
             public void onResult(String data) {
-                List<Track> tracks = Track.parseMultipleTracks(data);
+                JsonParser<Track> trackJsonParser = new TrackJsonParser();
+                List<Track> tracks = trackJsonParser.parseMultipleObjects(data);
                 Toast.makeText(MainActivity.this, "tracks were received " + tracks.toString(), Toast.LENGTH_SHORT).show();
             }
 
