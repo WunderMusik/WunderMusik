@@ -3,6 +3,15 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Splash screen values-->
+
+    <dimen name="logo_margin">108dp</dimen>
+    <dimen name="splash_text_margin_top">16dp</dimen>
+    <dimen name="splash_text_size">32sp</dimen>
+    <dimen name="net_status_text_size">20sp</dimen>
+    <dimen name="splash_text">18sp</dimen>
+    <dimen name="splash_loader_margin_top">64dp</dimen>
     <dimen name="title_size">15sp</dimen>
 
     <!-- Player values-->
@@ -23,5 +32,4 @@
 
     <dimen name="player_button_size">80dp</dimen>
     <dimen name="player_button_margin">50dp</dimen>
-
 </resources>
