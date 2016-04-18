@@ -9,35 +9,38 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import ru.bmstu.wundermusik.PlayerActivity;
 import ru.bmstu.wundermusik.R;
+import ru.bmstu.wundermusik.models.Track;
 
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.ViewHolder> {
 
-    public ArrayList<String> data;
+    public ArrayList<Track> data;
 
-    public TrackListAdapter(ArrayList<String> data) {
+    public TrackListAdapter(ArrayList<Track> data) {
         this.data = data;
     }
 
-    // FIXME: 13.04.16 http://stackoverflow.com/questions/24471109/recyclerview-onclick
     @Override
     public TrackListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.track_list_item, parent, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(view.getContext(), PlayerActivity.class);
-                view.getContext().startActivity(intent);
-            }
-        });
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(TrackListAdapter.ViewHolder holder, int position) {
-        holder.textView.setText(data.get(position));
+        String title = data.get(position).getTitle(),
+                singer = data.get(position).getSinger().getName();
+
+        if (title != null) {
+            holder.titleView.setText(title);
+        }
+        // FIXME: 19.04.16 С исполнителем пока какая-то лажа. Поздно
+//        if (singer != null) {
+//            holder.artistView.setText(singer);
+//        }
     }
 
     @Override
@@ -50,12 +53,12 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         return position;
     }
 
-    public void add(String string) {
-        insert(string, data.size());
+    public void add(Track track) {
+        insert(track, data.size());
     }
 
-    public void insert(String string, int position) {
-        data.add(position, string);
+    public void insert(Track track, int position) {
+        data.add(position, track);
         notifyItemInserted(position);
     }
 
@@ -70,18 +73,19 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         notifyItemRangeRemoved(0, size);
     }
 
-    public void addAll(String[] strings) {
+    public void addAll(List<Track> tracks) {
         int startIndex = data.size();
-        data.addAll(startIndex, Arrays.asList(strings));
-        notifyItemRangeInserted(startIndex, strings.length);
+        data.addAll(startIndex, tracks);
+        notifyItemRangeInserted(startIndex, tracks.size());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
+        public TextView titleView;
+        public TextView artistView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.titleView);
+            titleView = (TextView) itemView.findViewById(R.id.artistView);
         }
     }
 }

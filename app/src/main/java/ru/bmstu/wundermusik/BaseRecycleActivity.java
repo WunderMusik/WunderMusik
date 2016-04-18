@@ -7,14 +7,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.malinskiy.superrecyclerview.swipe.SparseItemRemoveAnimator;
 import com.malinskiy.superrecyclerview.swipe.SwipeDismissRecyclerViewTouchListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ru.bmstu.wundermusik.adapters.TrackListAdapter;
+import ru.bmstu.wundermusik.models.Track;
 
 public abstract class BaseRecycleActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, SwipeDismissRecyclerViewTouchListener.DismissCallbacks {
 
@@ -29,7 +33,7 @@ public abstract class BaseRecycleActivity extends AppCompatActivity implements S
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
 
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<Track> list = new ArrayList<>();
         mAdapter = new TrackListAdapter(list);
 
         mRecycler = (SuperRecyclerView) findViewById(R.id.list);
@@ -61,9 +65,16 @@ public abstract class BaseRecycleActivity extends AppCompatActivity implements S
 
         mHandler.postDelayed(new Runnable() {
             public void run() {
-                mAdapter.add("New stuff");
             }
         }, 2000);
+    }
+
+    protected void addSingleTrack(Track track) {
+        mAdapter.add(track);
+    }
+
+    protected void addTrackList(List<Track> tracks) {
+        mAdapter.addAll(tracks);
     }
 
     @Override

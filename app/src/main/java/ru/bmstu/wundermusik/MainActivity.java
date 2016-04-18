@@ -1,7 +1,9 @@
 package ru.bmstu.wundermusik;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class MainActivity extends BaseRecycleActivity {
             public void onResult(String data) {
                 JsonParser<Track> trackJsonParser = new TrackJsonParser();
                 Track track = trackJsonParser.parseSingleObject(data);
+                addSingleTrack(track);
                 if (track != null)
                     Toast.makeText(MainActivity.this, "track received " + track.toString(), Toast.LENGTH_SHORT).show();
             }
@@ -39,19 +42,24 @@ public class MainActivity extends BaseRecycleActivity {
             public void onResult(String data) {
                 JsonParser<Track> trackJsonParser = new TrackJsonParser();
                 List<Track> tracks = trackJsonParser.parseMultipleObjects(data);
-                Toast.makeText(MainActivity.this, "tracks were received " + tracks.toString(), Toast.LENGTH_SHORT).show();
+                addTrackList(tracks);
+                for (Track track : tracks) {
+                    Log.i("TRACKS_RECEIVED", track.getTitle());
+                }
             }
 
             @Override
             public void onFailure(int code, String errorMsg) {
-                Toast.makeText(MainActivity.this, "tracks were received", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void searchButtonClick(View v) {
-        this.onRefresh();
+        String searchString = ((TextView) findViewById(R.id.search_field)).getText().toString();
+        askTracksByName(searchString);
     }
+
 
     @Override
     protected int getLayoutId() {
