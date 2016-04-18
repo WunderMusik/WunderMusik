@@ -1,10 +1,12 @@
 package ru.bmstu.wundermusik;
 
-import org.junit.Before;
-
+import android.os.RemoteException;
 import android.support.test.InstrumentationRegistry;
-
+import android.support.test.uiautomator.UiDevice;
 import android.test.ActivityInstrumentationTestCase2;
+
+import org.junit.Before;
+import org.junit.Ignore;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -12,6 +14,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+@Ignore
 public class ActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
     private MainActivity mainActivity;
     private final String MESSAGE_BEFORE = "TEXT #1";
@@ -26,13 +29,21 @@ public class ActivityTest extends ActivityInstrumentationTestCase2<MainActivity>
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         mainActivity = getActivity();
+
     }
 
-
     public void testDoSomething_MainActivity() {
-        onView(withId(R.id.superUsefulTextbox)).check(matches(withText(MESSAGE_BEFORE)));
-        onView(withId(R.id.superButton)).perform(click());
-        onView(withId(R.id.superUsefulTextbox)).check(matches(withText(MESSAGE_AFTER)));
+        UiDevice uiDevice = UiDevice.getInstance(getInstrumentation());
+        try {
+            uiDevice.sleep();
+            Thread.sleep(1000);
+            uiDevice.wakeUp();
+            Thread.sleep(1000);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

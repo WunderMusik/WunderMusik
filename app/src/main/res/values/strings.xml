@@ -7,6 +7,8 @@
     <string name="no_net_status">No connection</string>
     <string name="net_success_status">Success</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_player">PlayerActivity</string>
+    <string name="title_activity_list">ListActivity</string>
+    <string name="search_button_text">Search</string>
+    <string name="search_view_hint">Artist, track</string>
 </resources>

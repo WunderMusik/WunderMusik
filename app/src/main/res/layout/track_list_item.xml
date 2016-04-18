@@ -1,0 +1,56 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="ru.bmstu.wundermusik.fragments.PlayerFragment"
+    android:id="@+id/layoutHeader"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/player_header_height"
+    android:layout_marginTop="@dimen/player_header_margin"
+    android:background="@color/playerPrimaryDark"
+    >
+
+    <com.pkmmte.view.CircularImageView
+        android:id="@+id/imageviewHeader"
+        android:layout_width="@dimen/player_header_image_width"
+        android:layout_height="@dimen/player_header_image_height"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/player_header_margin"
+        android:src="@drawable/icon_header"
+        app:border="true"
+        app:border_color="#EEEEEE"
+        app:border_width="@dimen/player_header_image_border"
+        app:shadow="true"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageviewHeader"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/player_header_margin"
+        android:id="@+id/headerTextLayout">
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/artistView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/playerPrimaryFont"
+        android:text="Artist - Track"
+        android:textStyle="italic"
+        android:layout_below="@+id/headerTextLayout"
+        android:layout_alignLeft="@+id/headerTextLayout"
+        android:layout_alignStart="@+id/headerTextLayout" />
+
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/playerPrimaryFont"
+        android:text="Artist - Track"
+        android:textSize="@dimen/title_size"
+        android:layout_above="@+id/headerTextLayout"
+        android:layout_alignLeft="@+id/headerTextLayout"
+        android:layout_alignStart="@+id/headerTextLayout" />
+</RelativeLayout>

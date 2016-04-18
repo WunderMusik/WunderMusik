@@ -33,7 +33,9 @@
         <activity
             android:name=".PlayerActivity"
             android:label="@string/title_activity_player"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
     </application>
 
 </manifest>
