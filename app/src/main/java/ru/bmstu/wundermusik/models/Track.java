@@ -27,36 +27,6 @@ public class Track implements Serializable {
 
     public Track(){}
 
-<<<<<<< HEAD
-    public void setStreamUrl(String streamUrl) {
-        this.streamUrl = streamUrl;
-    }
-
-    public String getStreamUrl() {
-
-        return streamUrl;
-    }
-
-    public static Track parseSingleTrackInternal(JSONObject dataJsonObj){
-        Track res = new Track();
-        try {
-            res.id = dataJsonObj.getInt("id");
-            res.title = dataJsonObj.getString("title");
-            res.singer = Singer.parseSingleSingerInternal(dataJsonObj.getJSONObject("user"));
-            if (dataJsonObj.getBoolean("streamable")){
-                res.contentSize = dataJsonObj.getInt("original_content_size");
-                res.duration = dataJsonObj.getInt("duration");
-                res.format = dataJsonObj.getString("original_format");
-                res.streamUrl = dataJsonObj.getString("stream_url");
-            } else
-                res = null;
-        } catch (JSONException e) {
-            res = null;
-            e.printStackTrace();
-
-        }
-        return null;
-=======
     public long getId() {
         return id;
     }
@@ -103,7 +73,6 @@ public class Track implements Serializable {
 
     public void setContentSize(long contentSize) {
         this.contentSize = contentSize;
->>>>>>> refs/remotes/origin/master
     }
 
     public void setStreamUrl(String streamUrl) {

@@ -9,23 +9,18 @@ import android.widget.Toast;
 import ru.bmstu.wundermusik.MusicPlayer.MusicPlayer;
 import ru.bmstu.wundermusik.api.soundcloud.ApiCallback;
 import ru.bmstu.wundermusik.api.soundcloud.Invoker;
-<<<<<<< HEAD
 import ru.bmstu.wundermusik.models.Track;
-=======
 import ru.bmstu.wundermusik.models.parsers.JsonParser;
-import ru.bmstu.wundermusik.models.Track;
 import ru.bmstu.wundermusik.models.parsers.TrackJsonParser;
->>>>>>> refs/remotes/origin/master
 
 import android.widget.Button;
 import android.widget.TextView;
 
-<<<<<<< HEAD
 import java.io.IOException;
 import java.util.ArrayList;
-=======
+
 import java.util.List;
->>>>>>> refs/remotes/origin/master
+
 
 public class MainActivity extends AppCompatActivity  {
 
