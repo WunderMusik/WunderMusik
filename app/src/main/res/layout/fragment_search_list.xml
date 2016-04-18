@@ -2,6 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/search_layout"/>
+
     <com.malinskiy.superrecyclerview.SuperRecyclerView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list"
@@ -11,6 +13,7 @@
         app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
         app:recyclerClipToPadding="false"
         app:recyclerPadding="16dp"
-        app:scrollbarStyle="insideInset"/>
+        app:scrollbarStyle="insideInset"
+        android:layout_below="@+id/search_layout" />
 
 </RelativeLayout>
