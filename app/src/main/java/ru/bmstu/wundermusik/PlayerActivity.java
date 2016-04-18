@@ -43,12 +43,19 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     public void onClickControl(View btn) {
-        Toast.makeText(this, "control", Toast.LENGTH_SHORT).show();
+        PlayerFragment frag = (PlayerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+
+        frag.changeControlView(this);
     }
     public void onClickNext(View btn) {
-        Toast.makeText(this, "next", Toast.LENGTH_SHORT).show();
+        PlayerFragment frag = (PlayerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+        frag.setTrack("Next-title", "Next-artist");
     }
     public void onClickPrevious(View btn) {
-        Toast.makeText(this, "previous", Toast.LENGTH_SHORT).show();
+        PlayerFragment frag = (PlayerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+        frag.setTrack("Previous-title", "Previous-artist");
     }
 }
