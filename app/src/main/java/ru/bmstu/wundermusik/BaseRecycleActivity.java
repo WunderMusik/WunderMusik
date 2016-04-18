@@ -14,10 +14,12 @@ import com.malinskiy.superrecyclerview.swipe.SwipeDismissRecyclerViewTouchListen
 
 import java.util.ArrayList;
 
+import ru.bmstu.wundermusik.adapters.TrackListAdapter;
+
 public abstract class BaseRecycleActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, SwipeDismissRecyclerViewTouchListener.DismissCallbacks {
 
     private SuperRecyclerView          mRecycler;
-    private StringListAdapter          mAdapter;
+    private TrackListAdapter mAdapter;
     private SparseItemRemoveAnimator   mSparseAnimator;
     private RecyclerView.LayoutManager mLayoutManager;
     private Handler                    mHandler;
@@ -28,7 +30,7 @@ public abstract class BaseRecycleActivity extends AppCompatActivity implements S
         setContentView(getLayoutId());
 
         ArrayList<String> list = new ArrayList<>();
-        mAdapter = new StringListAdapter(list);
+        mAdapter = new TrackListAdapter(list);
 
         mRecycler = (SuperRecyclerView) findViewById(R.id.list);
         mLayoutManager = getLayoutManager();
