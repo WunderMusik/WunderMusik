@@ -10,10 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import ru.bmstu.wundermusik.MusicPlayer.MusicPlayer;
 import ru.bmstu.wundermusik.api.soundcloud.ApiCallback;
 import ru.bmstu.wundermusik.api.soundcloud.Invoker;
+import ru.bmstu.wundermusik.models.Track;
+
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -42,6 +48,31 @@ public class MainActivity extends AppCompatActivity  {
                     txtView.setText("CHANGED TEXT");
                 }
 
+            });
+        }
+
+        btn = (Button) findViewById(R.id.playMusicButton);
+        if (btn != null){
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ArrayList<Track> tracks = new ArrayList<Track>();
+                    Track track = new Track();
+                    track.setStreamUrl("http://picosong.com/cdn/b8a5e824821af95194c3cf6e1f0202d7.mp3");
+                    tracks.add(track);
+                    track = new Track();
+                    track.setStreamUrl("http://picosong.com/cdn/77ac3e92040cb44de28c06a3a16dce43.mp3");
+                    tracks.add(track);
+                    MusicPlayer mp = new MusicPlayer();
+                    mp.setTrackList(tracks);
+
+                    try{
+                    mp.playSongAt(0);}
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
             });
         }
     }

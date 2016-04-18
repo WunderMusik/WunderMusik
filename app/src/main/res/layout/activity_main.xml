@@ -38,6 +38,13 @@
             android:text="To Player"
             android:id="@+id/button"
             android:layout_gravity="center" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MUSIC!"
+            android:id="@+id/playMusicButton"
+            android:layout_gravity="bottom|right" />
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

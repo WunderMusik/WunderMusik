@@ -23,7 +23,16 @@ public class Track implements Serializable {
     private String streamUrl;
     private Singer singer;
 
-    private Track(){}
+    public Track(){}
+
+    public void setStreamUrl(String streamUrl) {
+        this.streamUrl = streamUrl;
+    }
+
+    public String getStreamUrl() {
+
+        return streamUrl;
+    }
 
     public static Track parseSingleTrackInternal(JSONObject dataJsonObj){
         Track res = new Track();
