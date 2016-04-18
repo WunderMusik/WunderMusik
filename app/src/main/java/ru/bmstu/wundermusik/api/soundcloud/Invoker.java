@@ -56,6 +56,15 @@ public class Invoker {
         queryMap.put(queryId, callback);
     }
 
+    public void queryTracksByName(String trackName, ApiCallback callback) {
+        Intent intent = makeIntent(InvokerService.TYPE_GET_TRACKS_BY_NAME);
+        intent.putExtra(InvokerService.KEY_TRACK_NAME, trackName);
+        context.startService(intent);
+
+        long queryId = intent.getLongExtra(KEY_QUERY_ID, -1);
+        queryMap.put(queryId, callback);
+    }
+
     public void queryResource(String uri, ApiCallback callback) {
         Intent intent = makeIntent(InvokerService.TYPE_GET_RESOURCE);
         intent.putExtra(InvokerService.KEY_RESOURCE_URI, uri);

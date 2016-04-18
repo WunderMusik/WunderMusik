@@ -33,16 +33,15 @@ public class Singer implements Serializable {
         return avatarUrl;
     }
 
-    public static Singer parseSingleSingerInternal(JSONObject dataJsonObj){
-        Singer res = null;
-        try {
-            res = new Singer(dataJsonObj.getInt("id"),
-                             dataJsonObj.getString("avatar_url"),
-                             dataJsonObj.getString("username"));
-        } catch (JSONException e) {
-            res = null;
-            e.printStackTrace();
-        }
-        return res;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

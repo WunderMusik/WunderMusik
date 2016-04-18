@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import ru.bmstu.wundermusik.api.soundcloud.utils.Routes;
+
 /**
  * Created by ali on 29.03.16.
  */
@@ -25,6 +27,7 @@ public class Track implements Serializable {
 
     public Track(){}
 
+<<<<<<< HEAD
     public void setStreamUrl(String streamUrl) {
         this.streamUrl = streamUrl;
     }
@@ -53,31 +56,61 @@ public class Track implements Serializable {
 
         }
         return null;
+=======
+    public long getId() {
+        return id;
     }
 
-    public static Track parseSingleTrack(String strJson){
-        try {
-            JSONObject dataJsonObj = new JSONObject(strJson);
-            return parseSingleTrackInternal(dataJsonObj);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String getTitle() {
+        return title;
     }
 
-    public static List<Track> parseMultipleTracks(String strJson){
-        List<Track> resultList = new ArrayList<>();
-        try {
-            JSONArray dataJsonObj = new JSONArray(strJson);
-            for (int i=0; i<dataJsonObj.length(); i++) {
-                Track track = parseSingleTrackInternal(dataJsonObj.getJSONObject(i));
-                if (track != null)
-                    resultList.add(track);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } finally {
-            return resultList;
-        }
+    public long getDuration() {
+        return duration;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public long getContentSize() {
+        return contentSize;
+    }
+
+    public String getStreamUrl() {
+        return streamUrl;
+    }
+
+    public Singer getSinger() {
+        return singer;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public void setContentSize(long contentSize) {
+        this.contentSize = contentSize;
+>>>>>>> refs/remotes/origin/master
+    }
+
+    public void setStreamUrl(String streamUrl) {
+        this.streamUrl = streamUrl;
+    }
+
+    public void setSinger(Singer singer) {
+        this.singer = singer;
     }
 }
