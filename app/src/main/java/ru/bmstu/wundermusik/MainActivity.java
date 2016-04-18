@@ -1,7 +1,6 @@
 package ru.bmstu.wundermusik;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
 
 import java.util.List;
@@ -12,14 +11,7 @@ import ru.bmstu.wundermusik.models.Track;
 import ru.bmstu.wundermusik.models.parsers.JsonParser;
 import ru.bmstu.wundermusik.models.parsers.TrackJsonParser;
 
-public class MainActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-
+public class MainActivity extends BaseRecycleActivity {
 
     private void askTrack(long trackId) {
         Invoker invoker = Invoker.getInstance(this);
@@ -54,5 +46,20 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "tracks were received", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_search_list;
+    }
+
+    @Override
+    protected boolean isSwipeToDismissEnabled() {
+        return true;
+    }
+
+    @Override
+    protected LinearLayoutManager getLayoutManager() {
+        return new LinearLayoutManager(this);
     }
 }
