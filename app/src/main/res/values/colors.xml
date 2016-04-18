@@ -6,4 +6,16 @@
 
     <color name="splashBackground">#303F9F</color>
     <color name="splashText">#000000</color>
+
+    <color name="colorPrimaryLight">#b6b6b6</color>
+    <color name="colorPrimaryVeryLight">#e8e8e8</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#727272</color>
+    <color name="colorIcons">#212121</color>
+    <color name="colorDivider">#B6B6B6</color>
+    <color name="statusBarColor">#fbfbfd</color>
+
+    <color name="playerPrimaryDark">#cf36b174</color>
+    <color name="playerPrimaryLight">#cfa7dac1</color>
+    <color name="playerPrimaryFont">#FFFFFF</color>
 </resources>
