@@ -43,7 +43,9 @@ public class TrackJSONParseTest {
     private final String SINGLE_TRACK_STREAM_URL = "https://api.soundcloud.com/tracks/90771495/stream";
     //private final Singer SINGLE_TRACK_SINGER = null;
 
+
     @Test
+    @Ignore
     public void CreateNewTrackTest() {
         JsonParser<Track> trackJsonParser = new TrackJsonParser();
         Track track = trackJsonParser.parseSingleObject(SINGLE_TRACK_JSON);
