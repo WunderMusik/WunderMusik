@@ -10,17 +10,16 @@
     android:background="@color/playerPrimaryDark"
     >
 
-    <com.pkmmte.view.CircularImageView
+    <ImageView
         android:id="@+id/avatarView"
         android:layout_width="@dimen/player_header_image_width"
         android:layout_height="@dimen/player_header_image_height"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/player_header_margin"
         android:src="@drawable/icon_header"
-        app:border="true"
-        app:border_color="#EEEEEE"
-        app:border_width="@dimen/player_header_image_border"
-        app:shadow="true"/>
+        >
+
+    </ImageView>
 
     <RelativeLayout
         android:layout_width="wrap_content"
