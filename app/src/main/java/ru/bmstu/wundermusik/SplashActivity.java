@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import static ru.bmstu.wundermusik.utils.System.isOnline;
+import static ru.bmstu.wundermusik.utils.UtilSystem.isOnline;
 
 public class SplashActivity extends AppCompatActivity {
 

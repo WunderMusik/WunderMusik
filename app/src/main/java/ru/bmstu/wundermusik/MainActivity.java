@@ -18,13 +18,13 @@ import ru.bmstu.wundermusik.models.Track;
 import ru.bmstu.wundermusik.models.parsers.JsonParser;
 import ru.bmstu.wundermusik.models.parsers.TrackJsonParser;
 
-import static ru.bmstu.wundermusik.utils.System.isOnline;
-import static ru.bmstu.wundermusik.utils.System.showMessage;
+import static ru.bmstu.wundermusik.utils.UtilSystem.isOnline;
+import static ru.bmstu.wundermusik.utils.UtilSystem.displayMessage;
 
 public class MainActivity extends AppCompatActivity {
 
 //    LinkedList для сохранения порядка вставки
-    private List<Track> mListItems = new LinkedList<>();
+    private List<Track> trackList = new LinkedList<>();
     private TrackListAdapter mAdapter;
 
     @Override
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
 
         ListView listView = (ListView)findViewById(R.id.track_list_view);
-        mAdapter = new TrackListAdapter(this, mListItems);
+        mAdapter = new TrackListAdapter(this, trackList);
         listView.setAdapter(mAdapter);
     }
 
@@ -43,18 +43,18 @@ public class MainActivity extends AppCompatActivity {
         if (isOnline(this)) {
             askTracksByName(searchString);
         } else {
-            showMessage(findViewById(android.R.id.content), getResources().getString(R.string.no_net_status));
+            displayMessage(findViewById(android.R.id.content), getResources().getString(R.string.no_net_status));
         }
     }
 
     private void addTrackList(List<Track> tracks) {
-        mListItems.clear();
-        mListItems.addAll(tracks);
+        trackList.clear();
+        trackList.addAll(tracks);
         mAdapter.notifyDataSetChanged();
     }
 
     private void addSingleTrack(Track track) {
-        mListItems.add(0, track);
+        trackList.add(0, track);
         mAdapter.notifyDataSetChanged();
     }
 

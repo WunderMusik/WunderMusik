@@ -9,14 +9,14 @@ import android.view.View;
 /**
  * Created by max on 18.04.16.
  */
-public class System {
+public class UtilSystem {
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public static void showMessage (View messageParentView, String message) {
+    public static void displayMessage(View messageParentView, String message) {
         Snackbar snackbar = Snackbar
                 .make(messageParentView, message, Snackbar.LENGTH_LONG);
         snackbar.show();
