@@ -1,13 +1,16 @@
 package ru.bmstu.wundermusik;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +38,17 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView)findViewById(R.id.track_list_view);
         mAdapter = new TrackListAdapter(this, trackList);
         listView.setAdapter(mAdapter);
+
+        AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
+                intent.putExtra(PlayerActivity.TRACK_LIST, (Serializable) trackList);
+                intent.putExtra(PlayerActivity.CURRENT_TRACK, position);
+                MainActivity.this.startActivity(intent);
+            }
+        };
+        listView.setOnItemClickListener(itemClickListener);
     }
 
     public void searchButtonClick(View v) {
