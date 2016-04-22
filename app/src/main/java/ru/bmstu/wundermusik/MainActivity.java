@@ -67,14 +67,8 @@ public class MainActivity extends AppCompatActivity  {
                     track.setStreamUrl("http://picosong.com/cdn/77ac3e92040cb44de28c06a3a16dce43.mp3");
                     tracks.add(track);
                     MusicPlayer mp = new MusicPlayer();
-                    mp.setTrackList(tracks);
+                    mp.setTrackListAndStart(tracks);
 
-                    try{
-                    mp.playSongAt(0);}
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
                 }
             });
         }
