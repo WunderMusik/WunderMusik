@@ -14,7 +14,6 @@ import java.util.List;
 import ru.bmstu.wundermusik.models.Track;
 
 public class MusicPlayer extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, AudioManager.OnAudioFocusChangeListener {
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -26,8 +25,8 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     }
 
     public enum PlayerState {
+        ERROR,
         NOT_INITIALISED,
-        IDLE,
         STOPPED,
         PAUSED,
         PLAYING,
@@ -36,16 +35,15 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     private MediaPlayer mediaPlayer = null;
     private List<Track> trackList = null;
     private Integer currentTrackPos = null;
-    private PlayerState playerState = PlayerState.IDLE;
+    private PlayerState playerState = PlayerState.NOT_INITIALISED;
     private void setUpMediaPlayer()
     {
         if(this.mediaPlayer == null)
         {
             this.mediaPlayer = new MediaPlayer();
-
-
         }
         //TODO: set up player properties, e.g. WakeMode
+        changePlayerState(PlayerState.NOT_INITIALISED);
         this.mediaPlayer.reset();
         this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         this.mediaPlayer.setOnPreparedListener(this);
@@ -54,44 +52,49 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
 
     public void onPlayRequest()
     {
-
+        changePlayerState(PlayerState.PLAYING);
+        mediaPlayer.start();
     }
 
     public void onPauseRequest()
     {
-
+        changePlayerState(PlayerState.PAUSED);
+        mediaPlayer.pause();
     }
 
     public void onNextRequest()
     {
-
+        playSongAt(++currentTrackPos);
     }
 
     public void onStopRequest()
     {
-
+        changePlayerState(PlayerState.STOPPED);
+        mediaPlayer.stop();
     }
 
     public void onPrevRequest()
     {
-
+        playSongAt(--currentTrackPos);
     }
 
-    public void playSongAt(int index) throws IOException
+    public void playSongAt(int index)
     {
-        if(this.playerState == PlayerState.NOT_INITIALISED)
-        {
-            //TODO: exception, fail
-        }
         if(index > trackList.size() - 1)
         {
             //TODO: OUT OF RANGE
         }
-        setUpMediaPlayer();
-        currentTrackPos = index;
-        mediaPlayer.setDataSource(trackList.get(currentTrackPos).getStreamUrl());
-        changePlayerState(PlayerState.PREPARING);
-        mediaPlayer.prepareAsync();
+        try {
+            setUpMediaPlayer();
+            currentTrackPos = index;
+            mediaPlayer.setDataSource(trackList.get(currentTrackPos).getStreamUrl());
+            changePlayerState(PlayerState.PREPARING);
+            mediaPlayer.prepareAsync();
+        } catch (IOException ioExc)
+        {
+            changePlayerState(PlayerState.ERROR);
+            //TODO: notify about io error
+        }
     }
 
     private void changePlayerState(PlayerState newState)
@@ -100,36 +103,31 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         this.playerState = newState;
     }
 
-    public void setTrackList(List<Track> trackList)
-    {
-        this.trackList = trackList;
-        this.currentTrackPos = 0;
+    public void setTrackListAndStart(List<Track> trackList) {
+        setTrackList(trackList);
+        playSongAt(0);
     }
 
 
+    private void setTrackList(List<Track> trackList)
+    {
+        this.trackList = trackList;
+        this.currentTrackPos = 0;
+        setUpMediaPlayer();
+    }
+
     private void startPlayng() {
         changePlayerState(PlayerState.PLAYING);
-
         mediaPlayer.start();
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        if(currentTrackPos < trackList.size() - 1)
-        {
-            try{
-            playSongAt(currentTrackPos+1);
-
-                } catch (Exception e)
-            {
-
-            }
-        }
+        onNextRequest();
     }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-
         startPlayng();
     }
 
