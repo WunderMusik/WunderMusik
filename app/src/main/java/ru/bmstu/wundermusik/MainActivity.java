@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+import ru.bmstu.wundermusik.MusicPlayer.MusicPlayer;
 import ru.bmstu.wundermusik.adapters.TrackListAdapter;
 import ru.bmstu.wundermusik.api.soundcloud.ApiCallback;
 import ru.bmstu.wundermusik.api.soundcloud.Invoker;
@@ -26,7 +27,7 @@ import static ru.bmstu.wundermusik.utils.UtilSystem.displayMessage;
 
 public class MainActivity extends AppCompatActivity {
 
-//    LinkedList для сохранения порядка вставки
+    //    LinkedList для сохранения порядка вставки
     private List<Track> trackList = new LinkedList<>();
     private TrackListAdapter mAdapter;
 
@@ -61,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void addTrackList(List<Track> tracks) {
+        trackList.clear();
+        trackList.addAll(tracks);
+        mAdapter.notifyDataSetChanged();
+    }
+
     private void addSingleTrack(Track track) {
         trackList.add(0, track);
         mAdapter.notifyDataSetChanged();
@@ -73,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResult(String data) {
                 JsonParser<Track> trackJsonParser = new TrackJsonParser();
                 List<Track> tracks = trackJsonParser.parseMultipleObjects(data);
-//                addTrackList(tracks);
+                addTrackList(tracks);
                 for (Track track : tracks) {
                     Log.i("TRACKS_RECEIVED", track.getTitle());
                 }
