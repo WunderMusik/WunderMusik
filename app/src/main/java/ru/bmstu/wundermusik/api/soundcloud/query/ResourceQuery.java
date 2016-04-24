@@ -17,7 +17,7 @@ import ru.bmstu.wundermusik.api.soundcloud.utils.StatusCode;
 public class ResourceQuery extends AbstractQuery {
 
     /**
-     * Исполнение HTTP запроса. Возвращает Bundle в поток клиента, через {@see Invoker}
+     * Исполнение HTTP запроса. Возвращает Bundle в поток клиента, через {@link ru.bmstu.wundermusik.api.soundcloud.Invoker Invoker}
      * @param callback обратный вызов для возвращения результата
      * @param uri адрес ресурса и get параметры
      */

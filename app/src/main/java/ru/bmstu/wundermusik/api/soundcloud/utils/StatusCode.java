@@ -1,7 +1,7 @@
 package ru.bmstu.wundermusik.api.soundcloud.utils;
 
 /**
- * Статусы обработки запросов для взаимодействия между производными от {@see AbstractQuery}
+ * Статусы обработки запросов для взаимодействия между производными от {@link ru.bmstu.wundermusik.api.soundcloud.query.AbstractQuery AbstractQuery}
  * классов и клиентами API
  *
  * @author max
