@@ -80,7 +80,7 @@
                 android:background="@drawable/ic_play_circle_filled_white_48dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:onClick="onClickControl"/>
+                android:onClick="onClickPause"/>
 
             <Button
                 android:id="@+id/buttonNext"

@@ -21,6 +21,7 @@ import com.squareup.picasso.Target;
 import java.util.concurrent.TimeUnit;
 
 import co.mobiwise.library.MaskProgressView;
+import co.mobiwise.library.OnProgressDraggedListener;
 import ru.bmstu.wundermusik.PlayerActivity;
 import ru.bmstu.wundermusik.R;
 import ru.bmstu.wundermusik.models.Track;
@@ -32,6 +33,7 @@ public class PlayerFragment extends Fragment {
     private View playerView = null;
     private ControlState currentState = ControlState.PLAY;
     private static final String TAG = "PlayerFragment";
+    private MaskProgressView maskProgressView;
 
     public PlayerFragment() {
         // Required empty public constructor
@@ -49,12 +51,9 @@ public class PlayerFragment extends Fragment {
         Bundle args = getArguments();
 
         if (args != null) {
-            String state = "PLAY";
-
-            if (state != null) {
-                currentState = ControlState.valueOf(state);
-            }
+            currentState = ControlState.PLAY;
             setTrackData((Track) args.getSerializable(PlayerActivity.CURRENT_TRACK));
+            maskProgressView = (MaskProgressView) playerView.findViewById(R.id.maskProgressView);
         } else {
             UtilSystem.displayMessage(
                     playerView.findViewById(android.R.id.content),
@@ -70,8 +69,13 @@ public class PlayerFragment extends Fragment {
         TextView artistView = (TextView) playerView.findViewById(R.id.artistView);
         artistView.setText(track.getSinger().getName());
         final ImageView artistImage = (ImageView) playerView.findViewById(R.id.avatarView);
-        final MaskProgressView maskProgressView = (MaskProgressView) playerView.findViewById(R.id.maskProgressView);
+
+        if (maskProgressView == null) {
+            maskProgressView = (MaskProgressView) playerView.findViewById(R.id.maskProgressView);
+        }
+
         maskProgressView.setmMaxSeconds((int) TimeUnit.SECONDS.convert(track.getDuration(), TimeUnit.MILLISECONDS));
+
 
         Picasso.with(getActivity())
                 .load(track.getSinger().getAvatarUrl())
@@ -94,6 +98,11 @@ public class PlayerFragment extends Fragment {
                 });
     }
 
+    public void setCurrentPosition (int position) {
+        final MaskProgressView maskProgressView = (MaskProgressView) playerView.findViewById(R.id.maskProgressView);
+        maskProgressView.setmCurrentSeconds(position);
+    }
+
     public enum ControlState {
         PLAY("ic_play_circle_filled_white_48dp"),
         PAUSE("ic_pause_circle_filled_white_48dp");
@@ -109,6 +118,7 @@ public class PlayerFragment extends Fragment {
             int resourceId = resources.getIdentifier(this.image, "drawable", context.getPackageName());
             return resources.getDrawable(resourceId);
         }
+
         public ControlState inverse() {
             if (this == PLAY) return PAUSE;
             if (this == PAUSE) return PLAY;
@@ -116,14 +126,11 @@ public class PlayerFragment extends Fragment {
         }
     }
 
-    public void changeControlView(Context context) {
+    public void setPlayerState(Context context, ControlState state) {
         Button btnControl = (Button) playerView.findViewById(R.id.buttonControl);
-        ControlState newState = currentState.inverse();
         try {
-            if (newState != null) {
-                btnControl.setBackground(newState.getDrawable(context));
-                currentState = newState;
-            }
+            btnControl.setBackground(state.getDrawable(context));
+            currentState = state;
         }
         catch (Exception e) {
             Log.i(TAG, e.getMessage());
