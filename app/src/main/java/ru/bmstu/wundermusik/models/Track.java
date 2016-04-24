@@ -1,15 +1,6 @@
 package ru.bmstu.wundermusik.models;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import ru.bmstu.wundermusik.api.soundcloud.utils.Routes;
 
 /**
  * Created by ali on 29.03.16.

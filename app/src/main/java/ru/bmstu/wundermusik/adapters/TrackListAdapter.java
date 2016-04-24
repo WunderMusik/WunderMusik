@@ -1,48 +1,41 @@
 package ru.bmstu.wundermusik.adapters;
 
-import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.squareup.picasso.Picasso;
 
-import ru.bmstu.wundermusik.PlayerActivity;
+import java.util.List;
+
 import ru.bmstu.wundermusik.R;
+import ru.bmstu.wundermusik.models.Track;
 
-public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.ViewHolder> {
+/**
+ * Created by eugene on 20.04.16.
+ */
+public class TrackListAdapter extends BaseAdapter {
+    private Context mContext;
+    private List<Track> mTracks;
 
-    public ArrayList<String> data;
-
-    public TrackListAdapter(ArrayList<String> data) {
-        this.data = data;
-    }
-
-    // FIXME: 13.04.16 http://stackoverflow.com/questions/24471109/recyclerview-onclick
-    @Override
-    public TrackListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.track_list_item, parent, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(view.getContext(), PlayerActivity.class);
-                view.getContext().startActivity(intent);
-            }
-        });
-        return new ViewHolder(view);
+    public TrackListAdapter(Context context, List<Track> tracks) {
+        mContext = context;
+        mTracks = tracks;
     }
 
     @Override
-    public void onBindViewHolder(TrackListAdapter.ViewHolder holder, int position) {
-        holder.textView.setText(data.get(position));
+    public int getCount() {
+        return mTracks.size();
     }
 
     @Override
-    public int getItemCount() {
-        return data.size();
+    public Track getItem(int position) {
+        return mTracks.get(position);
     }
 
     @Override
@@ -50,38 +43,38 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         return position;
     }
 
-    public void add(String string) {
-        insert(string, data.size());
-    }
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-    public void insert(String string, int position) {
-        data.add(position, string);
-        notifyItemInserted(position);
-    }
+        Track track = getItem(position);
 
-    public void remove(int position) {
-        data.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void clear() {
-        int size = data.size();
-        data.clear();
-        notifyItemRangeRemoved(0, size);
-    }
-
-    public void addAll(String[] strings) {
-        int startIndex = data.size();
-        data.addAll(startIndex, Arrays.asList(strings));
-        notifyItemRangeInserted(startIndex, strings.length);
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.titleView);
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.track_list_item, parent, false);
+            holder = new ViewHolder();
+            holder.trackImageView = (ImageView) convertView.findViewById(R.id.avatarView);
+            holder.titleView = (TextView) convertView.findViewById(R.id.titleView);
+            holder.singerView = (TextView) convertView.findViewById(R.id.artistView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
+
+        holder.titleView.setText(track.getTitle());
+        holder.singerView.setText(track.getSinger().getName());
+
+        Log.i("Singer", track.getSinger().getName());
+        Log.i("Title", track.getTitle());
+        // Trigger the download of the URL asynchronously into the image view.
+        Picasso.with(mContext)
+                .load(track.getSinger().getAvatarUrl())
+                .into(holder.trackImageView);
+        return convertView;
+    }
+
+    static class ViewHolder {
+        ImageView trackImageView;
+        TextView titleView;
+        TextView singerView;
     }
 }
