@@ -13,7 +13,10 @@ import java.io.IOException;
 import java.util.List;
 
 import ru.bmstu.wundermusik.PlayerActivity;
+import ru.bmstu.wundermusik.events.NewPlayListEvent;
+import ru.bmstu.wundermusik.events.NextPrevEvent;
 import ru.bmstu.wundermusik.events.PlayPauseEvent;
+import ru.bmstu.wundermusik.events.StopEvent;
 import ru.bmstu.wundermusik.models.Track;
 
 public class MusicPlayer extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
@@ -33,16 +36,37 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     private MediaPlayer mediaPlayer = null;
     private List<Track> trackList = null;
     private Integer currentTrackPos = null;
-
-    // FIXME: 23.04.16 EG: объект, который нужно зарегистрировать, чтобы принимать события
     private EventBus bus = EventBus.getDefault();
-
     private PlayerState playerState = PlayerState.NOT_INITIALISED;
 
-    // FIXME: 23.04.16 EG: пример метода, который обрабатывает событие с клиентской части
     @Subscribe
     public void onEvent(PlayPauseEvent event){
-        onPauseRequest();
+        switch(playerState) {
+            case PLAYING: onPauseRequest(); break;
+            case PAUSED: onPlayRequest(); break;
+            default: break;
+        }
+    }
+    @Subscribe
+    public void onEvent(StopEvent event) {
+        switch (playerState)
+        {
+            case PLAYING:
+            case PAUSED: onStopRequest(); break;
+            default: break;
+        }
+    }
+    @Subscribe
+    public void onEvent(NextPrevEvent event) {
+        NextPrevEvent.Direction direction = event.getDirection();
+        switch (direction) {
+            case NEXT: onNextRequest(); break;
+            case PREV: onPrevRequest(); break;
+        }
+    }
+    @Subscribe
+    public void onEvent(NewPlayListEvent event) {
+        setTrackListAndStart(event.getTrackList(), event.getPosition());
     }
 
     private void setUpMediaPlayer() {
@@ -82,9 +106,11 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     }
 
     public void playSongAt(int index) {
+        //Play tracklist over and over again..
         if(index > trackList.size() - 1) {
-            changePlayerState(PlayerState.STOPPED);
-            //TODO: notify that playlist is out of songs to play
+            index = 0;
+        } else if(index < 0) {
+            index = trackList.size() - 1;
         }
         try {
             setUpMediaPlayer();
@@ -103,9 +129,9 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         this.playerState = newState;
     }
 
-    public void setTrackListAndStart(List<Track> trackList) {
+    public void setTrackListAndStart(List<Track> trackList, int startPos) {
         setTrackList(trackList);
-        playSongAt(0);
+        playSongAt(startPos);
     }
 
     private void setTrackList(List<Track> trackList) {
@@ -140,13 +166,11 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         return true;
     }
 
-    // FIXME: 23.04.16 EG: Обязательный метод, чтобы хоть как-то стартануть сервис
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (ACTION_PLAY.equals(intent.getAction())) {
             trackList = (List<Track>) intent.getSerializableExtra(PlayerActivity.TRACK_LIST);
-            setTrackList(trackList);
-            playSongAt(intent.getIntExtra(PlayerActivity.CURRENT_TRACK, 0));
+            setTrackListAndStart(trackList, intent.getIntExtra(PlayerActivity.CURRENT_TRACK, 0));
         }
         return START_NOT_STICKY;
     }
@@ -155,13 +179,11 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     public void onDestroy() {
         if (mediaPlayer != null)
             mediaPlayer.release();
-        // FIXME: 23.04.16 EG:
         bus.unregister(this);
     }
 
     @Override
     public void onCreate() {
-        // FIXME: 23.04.16 EG:
         bus.register(this);
     }
 

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ru.bmstu.wundermusik.MusicPlayer.MusicPlayer;
+import ru.bmstu.wundermusik.events.NextPrevEvent;
 import ru.bmstu.wundermusik.events.PlayPauseEvent;
 import ru.bmstu.wundermusik.fragments.PlayerFragment;
 import ru.bmstu.wundermusik.models.Track;
@@ -34,7 +35,6 @@ public class PlayerActivity extends AppCompatActivity {
         currentTrack = getIntent().getIntExtra(CURRENT_TRACK, 0);
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
-                // FIXME: 21.04.16 Сохранять состояние
                 return;
             }
 
@@ -61,30 +61,29 @@ public class PlayerActivity extends AppCompatActivity {
     public void onClickControl(View btn) {
         PlayerFragment frag = (PlayerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
-        // FIXME: 23.04.16 EG: Пример отправки сообщения
         EventBus.getDefault().post(new PlayPauseEvent());
         frag.changeControlView(this);
     }
     public void onClickNext(View btn) {
         PlayerFragment frag = (PlayerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
-        // FIXME: 21.04.16 SEND MESSAGE TO Player
         if (currentTrack < trackList.size() - 2) {
             currentTrack++;
         } else {
             currentTrack = 0;
         }
+        EventBus.getDefault().post(new NextPrevEvent(NextPrevEvent.Direction.NEXT));
         frag.setTrackData(trackList.get(currentTrack));
     }
     public void onClickPrevious(View btn) {
         PlayerFragment frag = (PlayerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
-        // FIXME: 21.04.16 SEND MESSAGE TO Player
         if (currentTrack > 0) {
             currentTrack--;
         } else {
             currentTrack = trackList.size() - 1;
         }
+        EventBus.getDefault().post(new NextPrevEvent(NextPrevEvent.Direction.PREV));
         frag.setTrackData(trackList.get(currentTrack));
     }
 
