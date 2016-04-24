@@ -22,8 +22,8 @@ import ru.bmstu.wundermusik.events.StopEvent;
 import ru.bmstu.wundermusik.events.TrackEndedEvent;
 import ru.bmstu.wundermusik.models.Track;
 
-/***
- * Этот класс представляет собой движок плеера.
+/**
+ * Движок плеера.
  * Реализован в виде Service, поскольку плеер должен работать в фоновом режиме.
  * Внутри себя хранит плейлист, состояния плеера
  * @author Nikita
@@ -49,9 +49,10 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     private EventBus bus = EventBus.getDefault();
     private PlayerState playerState = PlayerState.NOT_INITIALISED;
 
-    /***
+    /**
      * Обработчик событий, пришедших по EventBus
-     * В зависимости от типа входного параметра вызывается одна из реализаций
+     * Перегруженный метод: в зависимости от типа входного аргумента выполняется одна из реализаций
+     * обработчика
      * @param event - определяет событие, которое необходимо обработать. Может содержать
      *              дополнительную информацию по событию
      */
@@ -93,7 +94,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         }
     }
 
-    /***
+    /**
      * Настройка плеера. При первом вызове создает объект MediaPlayer и устанавливает значения
      * свойствам. При последующих вызовах сбрасывает состояние плеера.
      */
@@ -110,7 +111,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         this.mediaPlayer.reset();
     }
 
-    /***
+    /**
      * Обработчик запроса "Играть"
      */
     public void onPlayRequest() {
@@ -118,7 +119,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         mediaPlayer.start();
     }
 
-    /***
+    /**
      * Обработчик запроса "Пауза"
      */
     public void onPauseRequest() {
@@ -126,14 +127,14 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         mediaPlayer.pause();
     }
 
-    /***
+    /**
      * Обработчик запроса "Следующий трек"
      */
     public void onNextRequest() {
         playSongAt(++currentTrackPos);
     }
 
-    /***
+    /**
      * Обработчик запроса "Стоп"
      */
     public void onStopRequest() {
@@ -141,14 +142,14 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         mediaPlayer.stop();
     }
 
-    /***
+    /**
      * Обработчик запроса "Предыдущий трек"
      */
     public void onPrevRequest() {
         playSongAt(--currentTrackPos);
     }
 
-    /***
+    /**
      * Обработчик запроса "Поиск" Переводит текущую позицию плеера в треке на указанную
      * @param seekValue время в милисекундах
      */
@@ -157,7 +158,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         mediaPlayer.seekTo(seekValue);
     }
 
-    /***
+    /**
      * Запрос сыграть трек из текущего списка воспроизведения
      * @param index позиция трека в списке воспроизведения, индексация ведется с нуля
      */
@@ -182,7 +183,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         }
     }
 
-    /***
+    /**
      * Переводит плеер в новое состояние
      * @param newState новое состояние плеера
      */
@@ -191,7 +192,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         this.playerState = newState;
     }
 
-    /***
+    /**
      * Задает новый список воспроизведения и начинает воспроизводить желаемый трек
      * @param trackList список воспроизведения. Для сохранения позиций треков в списке рекомендуется
      *                  использовать списки, сохраняющие порядок внутри
@@ -213,7 +214,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         mediaPlayer.start();
     }
 
-    /***
+    /**
      * Вызывается при завершении воспроизведения трека
      * @param mp объект плеера, который вызвал обработчик
      */
@@ -223,7 +224,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         onNextRequest();
     }
 
-    /***
+    /**
      * Вызывается при завершении подготовки трека к воспроизведению
      * @param mp объект плеера, который вызвал обработчик
      */
@@ -237,7 +238,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
 
     }
 
-    /***
+    /**
      * Обработчик асинхронной ошибки
      * @param mp объект плеера, который вызвал обработчик
      * @param what код ошибки
@@ -265,7 +266,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         return START_NOT_STICKY;
     }
 
-    /***
+    /**
      * Освобождает ресурсы плеера и отменяет подписку на события
      */
     @Override
