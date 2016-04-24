@@ -10,10 +10,14 @@ import java.net.URL;
 import ru.bmstu.wundermusik.api.soundcloud.utils.Routes;
 
 /**
- * Created by max on 22.03.16.
+ * Базовый класс для запросов к API внешнего сервиса
+ * @author max
  */
 public abstract class AbstractQuery {
 
+    /**
+     * Ключи для формирования Bundle с результатом
+     */
     public static final String KEY_DATA = "key_data";
     public static final String KEY_ERROR = "key_error";
 
@@ -23,6 +27,13 @@ public abstract class AbstractQuery {
         return openConnectionByURI(Routes.BASE_API_URI + route, method);
     }
 
+    /**
+     * Открытие HTTP соединение и первичная настройка запроса
+     * @param uri адрес запроса
+     * @param method метод запроса
+     * @return открытое соединение
+     * @throws IOException если нет сети
+     */
     public static HttpURLConnection openConnectionByURI(String uri, String method)
             throws IOException
     {
@@ -36,6 +47,12 @@ public abstract class AbstractQuery {
         return conn;
     }
 
+    /**
+     * Чтение ответа от внешнего сервиса
+     * @param reader Буферизованный поток ввода
+     * @return строка с данными
+     * @throws IOException если не удалось выполнить операцию ввода-вывода
+     */
     public static String readResponse(BufferedReader reader)
             throws IOException
     {
@@ -47,6 +64,11 @@ public abstract class AbstractQuery {
         return buf.toString();
     }
 
+    /**
+     * Формирование Bundle с результатми об успехе
+     * @param data данные ответа на запрос
+     * @return Bundle
+     */
     public static Bundle successBundle(String data) {
         Bundle result = new Bundle();
         result.putString(KEY_DATA, data);

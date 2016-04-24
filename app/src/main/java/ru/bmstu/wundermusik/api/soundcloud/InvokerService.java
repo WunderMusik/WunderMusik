@@ -10,8 +10,17 @@ import java.util.Map;
 import ru.bmstu.wundermusik.api.soundcloud.query.ResourceQuery;
 import ru.bmstu.wundermusik.api.soundcloud.query.TrackQuery;
 
-
+/**
+ * Сервис для выполнения запросов к внешнему сервису.
+ * Получает {@see Intent} с параметрами из потока приложения и создает подходящий, производный от {@link ru.bmstu.wundermusik.api.soundcloud.query.AbstractQuery AbstractQuery} объект.
+ * Затем выполняет сам запрос. Обратные вызовы прокидываются.
+ *
+ * @author max
+ */
 public class InvokerService extends IntentService {
+    /**
+     * Ключи данных о запросах к внешнему сервису
+     */
     public final static String KEY_QUERY_TYPE = "query_type";
     public final static String KEY_QUERY_CALLBACK = "key_request_callback";
 
@@ -29,6 +38,10 @@ public class InvokerService extends IntentService {
         super("InvokerService");
     }
 
+    /**
+     * Точка старта сервиса. В зависимости от типа запроса будут ожидаться разные параметры.
+     * @param intent объект-намерения с параметрами запроса
+     */
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {

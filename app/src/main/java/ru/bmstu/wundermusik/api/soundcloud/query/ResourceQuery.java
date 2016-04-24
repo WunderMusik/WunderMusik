@@ -1,6 +1,5 @@
 package ru.bmstu.wundermusik.api.soundcloud.query;
 
-import android.os.Bundle;
 import android.os.ResultReceiver;
 
 import java.io.BufferedReader;
@@ -12,10 +11,16 @@ import ru.bmstu.wundermusik.api.soundcloud.utils.HttpMethod;
 import ru.bmstu.wundermusik.api.soundcloud.utils.StatusCode;
 
 /**
- * Created by max on 22.03.16.
+ * Запрос данных о ресурсе
+ * @author max
  */
 public class ResourceQuery extends AbstractQuery {
 
+    /**
+     * Исполнение HTTP запроса. Возвращает Bundle в поток клиента, через {@link ru.bmstu.wundermusik.api.soundcloud.Invoker Invoker}
+     * @param callback обратный вызов для возвращения результата
+     * @param uri адрес ресурса и get параметры
+     */
     public static void execute(ResultReceiver callback, String uri) {
         try {
             HttpURLConnection conn = openConnectionByURI(uri, HttpMethod.GET);

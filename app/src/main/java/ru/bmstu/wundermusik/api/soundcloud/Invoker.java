@@ -15,17 +15,30 @@ import ru.bmstu.wundermusik.api.soundcloud.query.AbstractQuery;
 import ru.bmstu.wundermusik.api.soundcloud.utils.StatusCode;
 
 /**
- * Created by max on 22.03.16.
+ * Класс-помощник для формирования вызовов к {@link ru.bmstu.wundermusik.api.soundcloud.InvokerService InvokerService},
+ * в котором будет непосредственное выполнение запросов к внешнему сервису.
+ * Класс-singleton.
+ *
+ * @author max
  */
 public class Invoker {
+    /**
+     * Ключи для формирования Bundle с параметрами запроса и ответом
+     */
     public final static String KEY_RESULT_CODE = "result_code";
     public final static String KEY_QUERY_ID = "query_id";
     public final static String KEY_QUERY_TYPE = "query_type";
     public final static String QUERY_ACTION = "query_action";
 
+    /**
+     * Защита при получении объекта Invoker из разных потоков.
+     */
     private final static Object lock = new Object();
     private static Invoker instance;
 
+    /**
+     * Компонент android, сделавший вызов
+     */
     private Context context;
 
     private Invoker(Context context) {
@@ -34,6 +47,11 @@ public class Invoker {
         context.registerReceiver(mApiReceiver, trackFilter);
     }
 
+    /**
+     * Реализация потокобезопасного singleton-а
+     * @param context компонент, запрашивающий объект Invoker
+     * @return синглтон
+     */
     public static Invoker getInstance(Context context) {
         synchronized (lock) {
             if (instance == null) {
@@ -47,6 +65,11 @@ public class Invoker {
         return UUID.randomUUID().getLeastSignificantBits();
     }
 
+    /**
+     * Формирование запроса за получением данных трека
+     * @param trackId идентификатор во внешнем сервисе
+     * @param callback обратный вызов, который получит результат запроса
+     */
     public void queryTrack(long trackId, ApiCallback callback) {
         Intent intent = makeIntent(InvokerService.TYPE_GET_TRACK);
         intent.putExtra(InvokerService.KEY_TRACK_ID, trackId);
@@ -56,6 +79,11 @@ public class Invoker {
         queryMap.put(queryId, callback);
     }
 
+    /**
+     * Формирование запроса за получением данных треков по строке поиска
+     * @param trackName строка поиска
+     * @param callback обратный вызов, который получит результат запроса
+     */
     public void queryTracksByName(String trackName, ApiCallback callback) {
         Intent intent = makeIntent(InvokerService.TYPE_GET_TRACKS_BY_NAME);
         intent.putExtra(InvokerService.KEY_TRACK_NAME, trackName);

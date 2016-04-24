@@ -12,7 +12,8 @@ import ru.bmstu.wundermusik.api.soundcloud.utils.Routes;
 import ru.bmstu.wundermusik.api.soundcloud.utils.StatusCode;
 
 /**
- * Created by max on 22.03.16.
+ * Запрос данных о треке. Формирует запрос как запрос к ресурсу
+ * @author max
  */
 public class TrackQuery extends ResourceQuery {
     public static final String trackUri = Routes.BASE_API_URI + Routes.TRACK;
