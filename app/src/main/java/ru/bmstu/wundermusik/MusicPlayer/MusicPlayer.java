@@ -16,7 +16,10 @@ import ru.bmstu.wundermusik.PlayerActivity;
 import ru.bmstu.wundermusik.events.NewPlayListEvent;
 import ru.bmstu.wundermusik.events.NextPrevEvent;
 import ru.bmstu.wundermusik.events.PlayPauseEvent;
+import ru.bmstu.wundermusik.events.PlayerError;
+import ru.bmstu.wundermusik.events.SeekEvent;
 import ru.bmstu.wundermusik.events.StopEvent;
+import ru.bmstu.wundermusik.events.TrackEndedEvent;
 import ru.bmstu.wundermusik.models.Track;
 
 public class MusicPlayer extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
@@ -68,6 +71,14 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     public void onEvent(NewPlayListEvent event) {
         setTrackListAndStart(event.getTrackList(), event.getPosition());
     }
+    @Subscribe
+    public void onEvent(SeekEvent event) {
+        switch (playerState) {
+            case PAUSED:
+            case PLAYING: onSeekRequest(event.getSeekValue() * 1000); break;
+            default: break;
+        }
+    }
 
     private void setUpMediaPlayer() {
         if(this.mediaPlayer == null) {
@@ -105,6 +116,11 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         playSongAt(--currentTrackPos);
     }
 
+    public void onSeekRequest(int seekValue)
+    {
+        mediaPlayer.seekTo(seekValue);
+    }
+
     public void playSongAt(int index) {
         //Play tracklist over and over again..
         if(index > trackList.size() - 1) {
@@ -120,7 +136,9 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
             mediaPlayer.prepareAsync();
         } catch (IOException ioExc) {
             changePlayerState(PlayerState.ERROR);
-            //TODO: notify about io error
+            StringBuilder stringBuilder = new StringBuilder();
+            String errorMsg = stringBuilder.append("IO error catch;Stack trace: ").append(ioExc.getStackTrace()).toString();
+            bus.post(new PlayerError(errorMsg));
         }
     }
 
@@ -146,6 +164,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     }
     @Override
     public void onCompletion(MediaPlayer mp) {
+        bus.post(new TrackEndedEvent());
         onNextRequest();
     }
     @Override
@@ -162,7 +181,9 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         changePlayerState(PlayerState.ERROR);
         //return value determines if error was handled. Returning false will couse OnCompletionListener
         //to be called
-        //TODO: show error msg
+        StringBuilder stringBuilder = new StringBuilder();
+        String errorMsg = stringBuilder.append("Async error catch;What: ").append(what).append("; Extra: ").append(extra).toString();
+        bus.post(new PlayerError(errorMsg));
         return true;
     }
 
