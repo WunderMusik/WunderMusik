@@ -17,12 +17,21 @@ import ru.bmstu.wundermusik.R;
 import ru.bmstu.wundermusik.models.Track;
 
 /**
- * Created by eugene on 20.04.16.
+ * Реализация паттерна ViewHolder для хранения списка треков
+ * ViewHolder эффективно сохраняет список треков и отображает его в Android
+ * {@link android.widget.ListView ListView}
+ * Кастомизация отображения трека в списке происходит здесь
+ * @author Eugene
  */
 public class TrackListAdapter extends BaseAdapter {
     private Context mContext;
     private List<Track> mTracks;
 
+    /**
+     * Конструктор
+     * @param context - контекст активити (или приложения) для отобраения
+     * @param tracks - список треков для отображения
+     */
     public TrackListAdapter(Context context, List<Track> tracks) {
         mContext = context;
         mTracks = tracks;
@@ -44,6 +53,12 @@ public class TrackListAdapter extends BaseAdapter {
     }
 
     @Override
+    /**
+     * Получение объекта класса View для дальнейшего отображения на экране
+     * @param position - номер элемента списка, который нужно отобразить
+     * @param convertView - View элемента списка, которую нужно заполнить данными
+     * @param parent - родительский элемент для convertView
+     */
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Track track = getItem(position);
@@ -67,13 +82,17 @@ public class TrackListAdapter extends BaseAdapter {
 
         Log.i("Singer", track.getSinger().getName());
         Log.i("Title", track.getTitle());
-        // Trigger the download of the URL asynchronously into the image view.
+
         Picasso.with(mContext)
                 .load(track.getSinger().getAvatarUrl())
                 .into(holder.trackImageView);
         return convertView;
     }
 
+    /**
+     * Форматирование продолжительности в милисекундах в формат mm:ss
+     * @param duration - продолжительность трека в милисекундах
+     */
     private String getDuration (long duration) {
         int total = (int) (duration / 1000);
         int minutes = (total % 3600) / 60;
@@ -81,6 +100,9 @@ public class TrackListAdapter extends BaseAdapter {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+    /**
+     * Содержит информацию, из каких объектов View состоит отображаемый список
+     */
     static class ViewHolder {
         ImageView trackImageView;
         TextView titleView;

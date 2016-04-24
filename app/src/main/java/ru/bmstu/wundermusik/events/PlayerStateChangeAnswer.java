@@ -4,10 +4,19 @@ import ru.bmstu.wundermusik.musicplayer.MusicPlayer;
 import ru.bmstu.wundermusik.models.Track;
 
 /**
- * Created by eugene on 24.04.16.
+ * Событие ответа от плеера. Посылается на каждое изменение состояния плеера
  */
 public class PlayerStateChangeAnswer {
-    public PlayerStateChangeAnswer(Track currentTrack, MusicPlayer.PlayerState newState, int position) {
+    /**
+     * Конструктор события
+     * @param currentTrack - текущий трек для отображения информации в плеере
+     * @param newState - текущее состояние плеера
+     * {@link ru.bmstu.wundermusik.musicplayer.MusicPlayer.PlayerState PlayerState}.
+     * @param position - положение плеера в секундах
+     */
+    public PlayerStateChangeAnswer(Track currentTrack, MusicPlayer.PlayerState newState,
+                                   int position)
+    {
         track = currentTrack;
         state = newState;
         this.position = position;
@@ -21,11 +30,11 @@ public class PlayerStateChangeAnswer {
         return track;
     }
 
-    private Track track;
-    private MusicPlayer.PlayerState state;
-    private int position;
-
     public int getPosition() {
         return position;
     }
+
+    private Track track;
+    private MusicPlayer.PlayerState state;
+    private int position;
 }

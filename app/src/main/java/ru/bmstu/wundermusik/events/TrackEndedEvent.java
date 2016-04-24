@@ -5,7 +5,5 @@ package ru.bmstu.wundermusik.events;
  * @author Nikita
  */
 public class TrackEndedEvent {
-    public TrackEndedEvent () {
-
-    }
+    public TrackEndedEvent () {}
 }

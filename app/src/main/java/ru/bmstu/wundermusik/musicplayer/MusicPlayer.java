@@ -183,7 +183,8 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
      */
     private void changePlayerState(PlayerState newState) {
         this.playerState = newState;
-        bus.post(new PlayerStateChangeAnswer(trackList.get(currentTrackPos), this.playerState, mediaPlayer.getCurrentPosition() * 1000));
+        bus.post(new PlayerStateChangeAnswer(trackList.get(currentTrackPos), this.playerState,
+                mediaPlayer.getCurrentPosition() * 1000));
     }
 
     /**
@@ -243,10 +244,9 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         changePlayerState(PlayerState.ERROR);
-        //return value determines if error was handled. Returning false will couse OnCompletionListener
-        //to be called
-        StringBuilder stringBuilder = new StringBuilder();
-        String errorMsg = stringBuilder.append("Async error catch;What: ").append(what).append("; Extra: ").append(extra).toString();
+        // return value determines if error was handled.
+        // Returning false will cause OnCompletionListener to be called
+        String errorMsg = "Async error catch;What: " + what + "; Extra: " + extra;
         bus.post(new PlayerError(errorMsg));
         return true;
     }

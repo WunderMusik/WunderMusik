@@ -24,9 +24,18 @@ import ru.bmstu.wundermusik.models.parsers.TrackJsonParser;
 import static ru.bmstu.wundermusik.utils.UtilSystem.isOnline;
 import static ru.bmstu.wundermusik.utils.UtilSystem.displayMessage;
 
+/**
+ * Экран списка треков в приложении
+ * После запуска экрана пользователю отображается строка поиска
+ * Результаты поиска отображаются в виде списка с помощью {@link TrackListAdapter TrackListAdapter}
+ * @author Max
+ * @author Eugene
+ */
 public class MainActivity extends AppCompatActivity {
 
-    //    LinkedList для сохранения порядка вставки
+    /**
+     * LinkedList нужен для сохранения порядка вставки треков
+     */
     private List<Track> trackList = new LinkedList<>();
     private TrackListAdapter mAdapter;
 
@@ -51,9 +60,12 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(itemClickListener);
     }
 
+    /**
+     * Обработка нажатия на кнопку "Поиск"
+     * @param v - View элемента, на который произошел клик
+     */
     public void searchButtonClick(View v) {
         String searchString = ((TextView) findViewById(R.id.search_field)).getText().toString();
-        // FIXME: 21.04.16 Какие-нибудь преобразования строки ввода
         if (isOnline(this)) {
             askTracksByName(searchString);
         } else {
@@ -61,12 +73,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Заполнение запрошенного списка треков в адаптер
+     * @param tracks
+     */
     private void addTrackList(List<Track> tracks) {
         trackList.clear();
         trackList.addAll(tracks);
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Запрос за списком треков по поисковой строке
+     * @param trackName - строка для поиска треков в сервисе
+     */
     private void askTracksByName(String trackName) {
         Invoker invoker = Invoker.getInstance(this);
         invoker.queryTracksByName(trackName, new ApiCallback() {

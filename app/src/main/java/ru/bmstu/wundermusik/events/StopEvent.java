@@ -6,7 +6,5 @@ package ru.bmstu.wundermusik.events;
  * @author Nikita
  */
 public class StopEvent {
-    public StopEvent() {
-
-    }
+    public StopEvent() {}
 }
