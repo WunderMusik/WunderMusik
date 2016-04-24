@@ -15,7 +15,7 @@
     <color name="colorDivider">#B6B6B6</color>
     <color name="statusBarColor">#fbfbfd</color>
 
-    <color name="playerPrimaryDark">#cf36b174</color>
-    <color name="playerPrimaryLight">#cfa7dac1</color>
+    <color name="playerPrimaryDark">#eb706ab9</color>
+    <color name="playerPrimaryLight">#aa9b94e7</color>
     <color name="playerPrimaryFont">#FFFFFF</color>
 </resources>
