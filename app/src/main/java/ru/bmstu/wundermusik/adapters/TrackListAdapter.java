@@ -55,6 +55,7 @@ public class TrackListAdapter extends BaseAdapter {
             holder.trackImageView = (ImageView) convertView.findViewById(R.id.avatarView);
             holder.titleView = (TextView) convertView.findViewById(R.id.titleView);
             holder.singerView = (TextView) convertView.findViewById(R.id.artistView);
+            holder.durationView = (TextView) convertView.findViewById(R.id.track_duration);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -62,6 +63,7 @@ public class TrackListAdapter extends BaseAdapter {
 
         holder.titleView.setText(track.getTitle());
         holder.singerView.setText(track.getSinger().getName());
+        holder.durationView.setText(getDuration(track.getDuration()));
 
         Log.i("Singer", track.getSinger().getName());
         Log.i("Title", track.getTitle());
@@ -72,9 +74,17 @@ public class TrackListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private String getDuration (long duration) {
+        int total = (int) (duration / 1000);
+        int minutes = (total % 3600) / 60;
+        int seconds = total % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
     static class ViewHolder {
         ImageView trackImageView;
         TextView titleView;
         TextView singerView;
+        TextView durationView;
     }
 }

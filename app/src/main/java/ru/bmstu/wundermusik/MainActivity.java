@@ -67,11 +67,6 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    private void addSingleTrack(Track track) {
-        trackList.add(0, track);
-        mAdapter.notifyDataSetChanged();
-    }
-
     private void askTracksByName(String trackName) {
         Invoker invoker = Invoker.getInstance(this);
         invoker.queryTracksByName(trackName, new ApiCallback() {
@@ -88,26 +83,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(int code, String errorMsg) {
                 Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    // FIXME: 21.04.16 Удалить?
-    private void askTrack(long trackId) {
-        Invoker invoker = Invoker.getInstance(this);
-        invoker.queryTrack(trackId, new ApiCallback() {
-            @Override
-            public void onResult(String data) {
-                JsonParser<Track> trackJsonParser = new TrackJsonParser();
-                Track track = trackJsonParser.parseSingleObject(data);
-                addSingleTrack(track);
-                if (track != null)
-                    Toast.makeText(MainActivity.this, "track received " + track.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(int code, String errorMsg) {
-
             }
         });
     }
