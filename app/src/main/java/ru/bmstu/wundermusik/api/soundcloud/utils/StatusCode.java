@@ -1,7 +1,10 @@
 package ru.bmstu.wundermusik.api.soundcloud.utils;
 
 /**
- * Created by max on 22.03.16.
+ * Статусы обработки запросов для взаимодействия между производными от {@see AbstractQuery}
+ * классов и клиентами API
+ *
+ * @author max
  */
 public class StatusCode {
     public static final int OK = 0;

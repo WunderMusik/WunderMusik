@@ -10,7 +10,9 @@ import java.util.Map;
 import ru.bmstu.wundermusik.api.soundcloud.query.ResourceQuery;
 import ru.bmstu.wundermusik.api.soundcloud.query.TrackQuery;
 
-
+/**
+ * @author max
+ */
 public class InvokerService extends IntentService {
     public final static String KEY_QUERY_TYPE = "query_type";
     public final static String KEY_QUERY_CALLBACK = "key_request_callback";

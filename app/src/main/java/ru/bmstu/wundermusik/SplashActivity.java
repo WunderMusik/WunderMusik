@@ -12,10 +12,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import static ru.bmstu.wundermusik.utils.UtilSystem.isOnline;
 
+/**
+ * Экран загрузки приложения с логотипом и прелоудером (Заставка)
+ * Если есть подключение к интернету, то приложение переходит к главному экарну
+ * Иначе остается на заставке.
+ * @author max
+ */
 public class SplashActivity extends AppCompatActivity {
 
     Button checkNetBtn;
     ProgressBar preloader;
+
+    /**
+     * Элемент экрана для отображения состояния сети
+     */
     TextView netStatus;
 
     @Override
@@ -31,6 +41,9 @@ public class SplashActivity extends AppCompatActivity {
 
         final Context context = SplashActivity.this;
 
+        /**
+         * Поток с отложенным на две секунды переходом к главному экрану.
+         */
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -44,6 +57,9 @@ public class SplashActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    /**
+     * Показать пользователю кнопку проверки сети
+     */
     public void showCheckButton() {
         preloader.setVisibility(View.GONE);
         checkNetBtn.setVisibility(View.VISIBLE);
@@ -51,6 +67,10 @@ public class SplashActivity extends AppCompatActivity {
         netStatus.setText("");
     }
 
+    /**
+     * Инициированная пользователем проверка наличия сети
+     * @param view кнопка, вызвавшая событие
+     */
     public void checkInternet(View view) {
         if (isOnline(this)) {
             netStatus.setText(R.string.net_success_status);
@@ -61,6 +81,10 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Переход к главному экрану с закрытием заставки
+     * @param ctx активити-иницииатор
+     */
     public static void startMainActivity(Context ctx) {
         Intent intent = new Intent(ctx, MainActivity.class);
         ctx.startActivity(intent);

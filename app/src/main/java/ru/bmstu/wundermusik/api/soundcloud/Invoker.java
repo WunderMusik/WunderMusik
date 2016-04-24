@@ -15,7 +15,7 @@ import ru.bmstu.wundermusik.api.soundcloud.query.AbstractQuery;
 import ru.bmstu.wundermusik.api.soundcloud.utils.StatusCode;
 
 /**
- * Created by max on 22.03.16.
+ * @author max
  */
 public class Invoker {
     public final static String KEY_RESULT_CODE = "result_code";

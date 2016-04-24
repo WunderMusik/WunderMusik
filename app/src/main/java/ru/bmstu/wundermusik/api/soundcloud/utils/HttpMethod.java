@@ -1,7 +1,8 @@
 package ru.bmstu.wundermusik.api.soundcloud.utils;
 
 /**
- * Created by root on 22.03.16.
+ * HTTP методы, с которыми будет работать наше приложение
+ * @author max
  */
 public class HttpMethod {
     public static final String GET = "GET";
