@@ -24,7 +24,8 @@ public class TrackJsonParser extends SoundCloudJsonParser<Track> {
                 res.setContentSize(dataJsonObj.getInt("original_content_size"));
                 res.setDuration(dataJsonObj.getInt("duration"));
                 res.setFormat(dataJsonObj.getString("original_format"));
-                res.setStreamUrl(dataJsonObj.getString("stream_url") + "?client_id=" + Routes.CLIENT_SECRET);
+                res.setStreamUrl("http://vprclassical.streamguys.net/vprclassical128.mp3");
+//                res.setStreamUrl(dataJsonObj.getString("stream_url") + "?client_id=" + Routes.CLIENT_SECRET);
             } else
                 res = null;
         } catch (JSONException e) {

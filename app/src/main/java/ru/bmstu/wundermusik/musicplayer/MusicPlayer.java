@@ -17,6 +17,7 @@ import ru.bmstu.wundermusik.events.NewPlayListEvent;
 import ru.bmstu.wundermusik.events.NextPrevEvent;
 import ru.bmstu.wundermusik.events.PlayPauseEvent;
 import ru.bmstu.wundermusik.events.PlayerError;
+import ru.bmstu.wundermusik.events.PlayerStateChangeAnswer;
 import ru.bmstu.wundermusik.events.SeekEvent;
 import ru.bmstu.wundermusik.events.StopEvent;
 import ru.bmstu.wundermusik.events.TrackEndedEvent;
@@ -33,6 +34,8 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         AudioManager.OnAudioFocusChangeListener, MediaPlayer.OnErrorListener {
 
     public static final String ACTION_PLAY = "ACTION_PLAY";
+    public static final int FORWARD = 1;
+    public static final int BACKWARD = -1;
 
     public enum PlayerState {
         ERROR,
@@ -66,8 +69,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     }
     @Subscribe
     public void onEvent(StopEvent event) {
-        switch (playerState)
-        {
+        switch (playerState) {
             case PLAYING:
             case PAUSED: onStopRequest(); break;
             default: break;
@@ -77,8 +79,8 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     public void onEvent(NextPrevEvent event) {
         NextPrevEvent.Direction direction = event.getDirection();
         switch (direction) {
-            case NEXT: onNextRequest(); break;
-            case PREV: onPrevRequest(); break;
+            case NEXT: onNextPrevRequest(FORWARD); break;
+            case PREV: onNextPrevRequest(BACKWARD); break;
         }
     }
     @Subscribe
@@ -107,54 +109,53 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
             this.mediaPlayer.setOnCompletionListener(this);
             this.mediaPlayer.setOnErrorListener(this);
         }
-        changePlayerState(PlayerState.NOT_INITIALISED);
         this.mediaPlayer.reset();
+        changePlayerState(PlayerState.NOT_INITIALISED);
     }
 
     /**
      * Обработчик запроса "Играть"
      */
     public void onPlayRequest() {
-        changePlayerState(PlayerState.PLAYING);
         mediaPlayer.start();
+        changePlayerState(PlayerState.PLAYING);
     }
 
     /**
      * Обработчик запроса "Пауза"
      */
     public void onPauseRequest() {
-        changePlayerState(PlayerState.PAUSED);
         mediaPlayer.pause();
+        changePlayerState(PlayerState.PAUSED);
     }
 
     /**
-     * Обработчик запроса "Следующий трек"
+     * Обработчик запроса "Следующий трек" и "Предыдущий трек"
      */
-    public void onNextRequest() {
-        playSongAt(++currentTrackPos);
+    public void onNextPrevRequest(int direction) {
+        currentTrackPos += direction;
+        //Play tracklist over and over again..
+        if(currentTrackPos > trackList.size() - 1) {
+            currentTrackPos = 0;
+        } else if(currentTrackPos < 0) {
+            currentTrackPos = trackList.size() - 1;
+        }
+        playSongAt(currentTrackPos);
     }
 
     /**
      * Обработчик запроса "Стоп"
      */
     public void onStopRequest() {
-        changePlayerState(PlayerState.STOPPED);
         mediaPlayer.stop();
-    }
-
-    /**
-     * Обработчик запроса "Предыдущий трек"
-     */
-    public void onPrevRequest() {
-        playSongAt(--currentTrackPos);
+        changePlayerState(PlayerState.STOPPED);
     }
 
     /**
      * Обработчик запроса "Поиск" Переводит текущую позицию плеера в треке на указанную
      * @param seekValue время в милисекундах
      */
-    public void onSeekRequest(int seekValue)
-    {
+    public void onSeekRequest(int seekValue) {
         mediaPlayer.seekTo(seekValue);
     }
 
@@ -163,12 +164,6 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
      * @param index позиция трека в списке воспроизведения, индексация ведется с нуля
      */
     public void playSongAt(int index) {
-        //Play tracklist over and over again..
-        if(index > trackList.size() - 1) {
-            index = 0;
-        } else if(index < 0) {
-            index = trackList.size() - 1;
-        }
         try {
             setUpMediaPlayer();
             currentTrackPos = index;
@@ -177,8 +172,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
             mediaPlayer.prepareAsync();
         } catch (IOException ioExc) {
             changePlayerState(PlayerState.ERROR);
-            StringBuilder stringBuilder = new StringBuilder();
-            String errorMsg = stringBuilder.append("IO error catch;Stack trace: ").append(ioExc.getStackTrace()).toString();
+            String errorMsg = "IO error catch;Stack trace: " + ioExc.getMessage();
             bus.post(new PlayerError(errorMsg));
         }
     }
@@ -188,8 +182,9 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
      * @param newState новое состояние плеера
      */
     private void changePlayerState(PlayerState newState) {
-        //TODO: notify about changed state
         this.playerState = newState;
+        bus.post(new PlayerStateChangeAnswer(trackList.get(currentTrackPos), this.playerState,
+                mediaPlayer.getCurrentPosition() * 1000));
     }
 
     /**
@@ -209,7 +204,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         setUpMediaPlayer();
     }
 
-    private void startPlayng() {
+    private void startPlaying() {
         changePlayerState(PlayerState.PLAYING);
         mediaPlayer.start();
     }
@@ -221,7 +216,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     @Override
     public void onCompletion(MediaPlayer mp) {
         bus.post(new TrackEndedEvent());
-        onNextRequest();
+        onNextPrevRequest(FORWARD);
     }
 
     /**
@@ -230,7 +225,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
      */
     @Override
     public void onPrepared(MediaPlayer mp) {
-        startPlayng();
+        startPlaying();
     }
 
     @Override
@@ -249,10 +244,9 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         changePlayerState(PlayerState.ERROR);
-        //return value determines if error was handled. Returning false will couse OnCompletionListener
-        //to be called
-        StringBuilder stringBuilder = new StringBuilder();
-        String errorMsg = stringBuilder.append("Async error catch;What: ").append(what).append("; Extra: ").append(extra).toString();
+        // return value determines if error was handled.
+        // Returning false will cause OnCompletionListener to be called
+        String errorMsg = "Async error catch;What: " + what + "; Extra: " + extra;
         bus.post(new PlayerError(errorMsg));
         return true;
     }

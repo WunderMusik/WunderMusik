@@ -40,7 +40,9 @@
         android:textStyle="italic"
         android:layout_below="@+id/headerTextLayout"
         android:layout_alignLeft="@+id/headerTextLayout"
-        android:layout_alignStart="@+id/headerTextLayout" />
+        android:layout_alignStart="@+id/headerTextLayout"
+        android:textSize="@dimen/singer_size"
+        android:layout_toStartOf="@+id/track_duration" />
 
     <TextView
         android:id="@+id/titleView"
@@ -51,5 +53,21 @@
         android:textSize="@dimen/title_size"
         android:layout_above="@+id/headerTextLayout"
         android:layout_alignLeft="@+id/headerTextLayout"
-        android:layout_alignStart="@+id/headerTextLayout" />
+        android:layout_alignStart="@+id/headerTextLayout"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:layout_toStartOf="@+id/track_duration" />
+
+    <TextView
+        android:id="@+id/track_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/playerPrimaryFont"
+        android:text="1:00"
+        android:layout_marginRight="@dimen/player_header_margin"
+        android:textStyle="italic"
+        android:textSize="@dimen/singer_size"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="@dimen/player_header_margin" />
 </RelativeLayout>
