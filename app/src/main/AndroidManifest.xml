@@ -32,7 +32,7 @@
             android:exported="false">
         </service>
         <service
-            android:name=".MusicPlayer.MusicPlayer"
+            android:name=".musicplayer.MusicPlayer"
             android:exported="true" />
         <activity
             android:name=".PlayerActivity"

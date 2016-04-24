@@ -1,10 +1,16 @@
 package ru.bmstu.wundermusik.events;
 
 /**
- * Created by Nikita on 4/24/2016.
+ * Событие от плеера к UI о произошедшей внутренней ошибке
+ * @author Nikita
  */
 public class PlayerError {
     private String msg;
+
+    /**
+     * Конструктор с параметрами
+     * @param msg сообшение об ошибке
+     */
     public PlayerError(String msg) {
         this.msg = msg;
     }

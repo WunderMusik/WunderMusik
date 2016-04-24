@@ -1,4 +1,4 @@
-package ru.bmstu.wundermusik.MusicPlayer;
+package ru.bmstu.wundermusik.musicplayer;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;

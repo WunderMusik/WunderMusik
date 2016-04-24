@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import ru.bmstu.wundermusik.MusicPlayer.MusicPlayer;
+import ru.bmstu.wundermusik.musicplayer.MusicPlayer;
 import ru.bmstu.wundermusik.events.NextPrevEvent;
 import ru.bmstu.wundermusik.events.PlayPauseEvent;
 import ru.bmstu.wundermusik.fragments.PlayerFragment;
