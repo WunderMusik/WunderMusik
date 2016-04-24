@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-import ru.bmstu.wundermusik.MusicPlayer.MusicPlayer;
 import ru.bmstu.wundermusik.adapters.TrackListAdapter;
 import ru.bmstu.wundermusik.api.soundcloud.ApiCallback;
 import ru.bmstu.wundermusik.api.soundcloud.Invoker;

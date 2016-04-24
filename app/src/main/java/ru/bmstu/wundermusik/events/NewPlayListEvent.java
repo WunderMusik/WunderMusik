@@ -5,14 +5,18 @@ import java.util.List;
 import ru.bmstu.wundermusik.models.Track;
 
 /**
- * Created by eugene on 23.04.16.
+ * Событие от UI к плееру о том, что был задан новый плейлист
+ * @author Eugene
  */
-// FIXME: 23.04.16 EG: Пример класса-события
 public class NewPlayListEvent {
-
     private List<Track> trackList;
     private int position;
 
+    /**
+     * Конструктор с параметрами
+     * @param trackList новый плейлист
+     * @param position позиция в плейлисте, с которой начать воспроизведение
+     */
     public NewPlayListEvent(List<Track> trackList, int position) {
         this.trackList = trackList;
         this.position = position;

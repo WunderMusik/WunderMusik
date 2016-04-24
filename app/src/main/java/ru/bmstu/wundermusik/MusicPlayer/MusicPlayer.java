@@ -1,4 +1,4 @@
-package ru.bmstu.wundermusik.MusicPlayer;
+package ru.bmstu.wundermusik.musicplayer;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -22,6 +22,13 @@ import ru.bmstu.wundermusik.events.StopEvent;
 import ru.bmstu.wundermusik.events.TrackEndedEvent;
 import ru.bmstu.wundermusik.models.Track;
 
+/**
+ * Движок плеера.
+ * Реализован в виде Service, поскольку плеер должен работать в фоновом режиме.
+ * Внутри себя хранит плейлист, состояния плеера
+ * @author Nikita
+ * @author Eugene
+ */
 public class MusicPlayer extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
         AudioManager.OnAudioFocusChangeListener, MediaPlayer.OnErrorListener {
 
@@ -42,6 +49,13 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     private EventBus bus = EventBus.getDefault();
     private PlayerState playerState = PlayerState.NOT_INITIALISED;
 
+    /**
+     * Обработчик событий, пришедших по EventBus
+     * Перегруженный метод: в зависимости от типа входного аргумента выполняется одна из реализаций
+     * обработчика
+     * @param event - определяет событие, которое необходимо обработать. Может содержать
+     *              дополнительную информацию по событию
+     */
     @Subscribe
     public void onEvent(PlayPauseEvent event){
         switch(playerState) {
@@ -80,6 +94,10 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         }
     }
 
+    /**
+     * Настройка плеера. При первом вызове создает объект MediaPlayer и устанавливает значения
+     * свойствам. При последующих вызовах сбрасывает состояние плеера.
+     */
     private void setUpMediaPlayer() {
         if(this.mediaPlayer == null) {
             this.mediaPlayer = new MediaPlayer();
@@ -93,34 +111,57 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         this.mediaPlayer.reset();
     }
 
+    /**
+     * Обработчик запроса "Играть"
+     */
     public void onPlayRequest() {
         changePlayerState(PlayerState.PLAYING);
         mediaPlayer.start();
     }
 
+    /**
+     * Обработчик запроса "Пауза"
+     */
     public void onPauseRequest() {
         changePlayerState(PlayerState.PAUSED);
         mediaPlayer.pause();
     }
 
+    /**
+     * Обработчик запроса "Следующий трек"
+     */
     public void onNextRequest() {
         playSongAt(++currentTrackPos);
     }
 
+    /**
+     * Обработчик запроса "Стоп"
+     */
     public void onStopRequest() {
         changePlayerState(PlayerState.STOPPED);
         mediaPlayer.stop();
     }
 
+    /**
+     * Обработчик запроса "Предыдущий трек"
+     */
     public void onPrevRequest() {
         playSongAt(--currentTrackPos);
     }
 
+    /**
+     * Обработчик запроса "Поиск" Переводит текущую позицию плеера в треке на указанную
+     * @param seekValue время в милисекундах
+     */
     public void onSeekRequest(int seekValue)
     {
         mediaPlayer.seekTo(seekValue);
     }
 
+    /**
+     * Запрос сыграть трек из текущего списка воспроизведения
+     * @param index позиция трека в списке воспроизведения, индексация ведется с нуля
+     */
     public void playSongAt(int index) {
         //Play tracklist over and over again..
         if(index > trackList.size() - 1) {
@@ -142,11 +183,21 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         }
     }
 
+    /**
+     * Переводит плеер в новое состояние
+     * @param newState новое состояние плеера
+     */
     private void changePlayerState(PlayerState newState) {
         //TODO: notify about changed state
         this.playerState = newState;
     }
 
+    /**
+     * Задает новый список воспроизведения и начинает воспроизводить желаемый трек
+     * @param trackList список воспроизведения. Для сохранения позиций треков в списке рекомендуется
+     *                  использовать списки, сохраняющие порядок внутри
+     * @param startPos позиция трека в списке воспроизведения, индексация ведется с нуля
+     */
     public void setTrackListAndStart(List<Track> trackList, int startPos) {
         setTrackList(trackList);
         playSongAt(startPos);
@@ -162,11 +213,21 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         changePlayerState(PlayerState.PLAYING);
         mediaPlayer.start();
     }
+
+    /**
+     * Вызывается при завершении воспроизведения трека
+     * @param mp объект плеера, который вызвал обработчик
+     */
     @Override
     public void onCompletion(MediaPlayer mp) {
         bus.post(new TrackEndedEvent());
         onNextRequest();
     }
+
+    /**
+     * Вызывается при завершении подготовки трека к воспроизведению
+     * @param mp объект плеера, который вызвал обработчик
+     */
     @Override
     public void onPrepared(MediaPlayer mp) {
         startPlayng();
@@ -176,6 +237,15 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     public void onAudioFocusChange(int focusChange) {
 
     }
+
+    /**
+     * Обработчик асинхронной ошибки
+     * @param mp объект плеера, который вызвал обработчик
+     * @param what код ошибки
+     * @param extra дополнительный код ошибки
+     * @return возвращает True, если ошибка обработана, false иначе. Если возвращать false, будет
+     * вызван обработчик OnCompletion()
+     */
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         changePlayerState(PlayerState.ERROR);
@@ -196,6 +266,9 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
         return START_NOT_STICKY;
     }
 
+    /**
+     * Освобождает ресурсы плеера и отменяет подписку на события
+     */
     @Override
     public void onDestroy() {
         if (mediaPlayer != null)
