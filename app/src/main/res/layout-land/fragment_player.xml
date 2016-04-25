@@ -101,6 +101,13 @@
                 android:layout_marginRight="@dimen/player_button_margin"
                 android:layout_centerVertical="true"
                 android:onClick="onClickPrevious"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/separator_size"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/colorPrimaryDark"/>
         </RelativeLayout>
 
     </RelativeLayout>
@@ -113,7 +120,7 @@
         <co.mobiwise.library.MaskProgressView
             android:id="@+id/maskProgressView"
             android:layout_width="@dimen/player_mask_view_width"
-            android:layout_height="@dimen/player_mask_view_height"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             app:progressEmptyColor="@color/playerPrimaryDark"
             app:progressLoadedColor="@color/playerPrimaryLight"
@@ -124,7 +131,8 @@
             app:progressHeight="@dimen/player_mask_view_progress_height"
             app:maxProgress="40"
             app:currentProgress="0"
-            app:placeHolder="@drawable/icon_header"/>
+            app:placeHolder="@drawable/icon_header"
+            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 </LinearLayout>

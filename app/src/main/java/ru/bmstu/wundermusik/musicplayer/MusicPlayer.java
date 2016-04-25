@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -156,6 +157,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
      * @param seekValue время в милисекундах
      */
     public void onSeekRequest(int seekValue) {
+        Log.i("PLAYER", "position = " + seekValue);
         mediaPlayer.seekTo(seekValue);
     }
 

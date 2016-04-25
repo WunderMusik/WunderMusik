@@ -88,39 +88,6 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Subscribe
     /**
-     * Обработка различных ответов от плеера
-     * @param event - объект события {@link PlayerStateChangeAnswer PlayerStateChangeAnswer}
-     */
-    public void onEvent(PlayerStateChangeAnswer event) {
-        Log.i(TAG, event.getState().name());
-        PlayerFragment playerFragment = (PlayerFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_container);
-        ProgressBar preloader = (ProgressBar) findViewById(R.id.preloader);
-        if (playerFragment != null) {
-            switch (event.getState()) {
-                case PAUSED:
-                    playerFragment.setPlayerState(this, PlayerFragment.ControlState.PLAY);
-                    playerFragment.pauseMaskProgress();
-                    break;
-                case PLAYING:
-                    playerFragment.setPlayerState(this, PlayerFragment.ControlState.PAUSE);
-                    playerFragment.setCurrentPosition(event.getPosition());
-                    if (preloader != null) {
-                        preloader.setVisibility(View.GONE);
-                    }
-                    break;
-                case PREPARING:
-                    if (preloader != null) {
-                        preloader.setVisibility(View.VISIBLE);
-                    }
-                    break;
-            }
-            playerFragment.setTrackData(event.getTrack());
-        }
-    }
-
-    @Subscribe
-    /**
      * Обработчик события ошибки от плеера
      */
     public void onEvent(PlayerError event) {
