@@ -29,7 +29,12 @@ public class TrackJsonParser extends SoundCloudJsonParser<Track> {
                 String trackFormat = dataJsonObj.getString("original_format");
                 String streamUrl = dataJsonObj.getString("stream_url");
                 streamUrl = Uri.parse(streamUrl).buildUpon().appendQueryParameter("client_id", Routes.CLIENT_ID).build().toString();
-                res = new Track(trackId, trackTitle, trackDuration, trackFormat, contentSize, streamUrl, singer);
+                String imageUrl = dataJsonObj.getString("artwork_url");
+                if (imageUrl.equals("null"))
+                    imageUrl = null;
+                if (imageUrl != null)
+                    imageUrl = imageUrl.replaceAll("large.jpg", "t500x500.jpg");
+                res = new Track(trackId, trackTitle, trackDuration, trackFormat, contentSize, streamUrl, singer, imageUrl);
             }
         } catch (JSONException e) {
             e.printStackTrace();
