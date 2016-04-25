@@ -34,7 +34,8 @@ public class TrackJsonParser extends SoundCloudJsonParser<Track> {
                     imageUrl = null;
                 if (imageUrl != null)
                     imageUrl = imageUrl.replaceAll("large.jpg", "t500x500.jpg");
-                res = new Track(trackId, trackTitle, trackDuration, trackFormat, contentSize, streamUrl, singer, imageUrl);
+                if (trackDuration >= 1000) // more than 1 second
+                    res = new Track(trackId, trackTitle, trackDuration, trackFormat, contentSize, streamUrl, singer, imageUrl);
             }
         } catch (JSONException e) {
             e.printStackTrace();
