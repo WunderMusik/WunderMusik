@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,7 +50,11 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         bus.register(this);
-        trackList = (List<Track>) getIntent().getSerializableExtra(TRACK_LIST);
+        if (savedInstanceState != null) {
+            trackList = (List<Track>) savedInstanceState.getSerializable(PlayerActivity.TRACK_LIST);
+        } else {
+            trackList = (List<Track>) getIntent().getSerializableExtra(TRACK_LIST);
+        }
         int currentTrack = getIntent().getIntExtra(CURRENT_TRACK, 0);
 
         if (findViewById(R.id.fragment_container) != null) {
@@ -126,5 +131,11 @@ public class PlayerActivity extends AppCompatActivity {
         PlayerFragment playerFragment = new PlayerFragment();
         playerFragment.setArguments(args);
         return playerFragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable(PlayerActivity.TRACK_LIST, (Serializable) trackList);
     }
 }

@@ -117,13 +117,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <ProgressBar
-            android:id="@+id/preloader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
 
         <co.mobiwise.library.MaskProgressView
             android:id="@+id/maskProgressView"
@@ -141,6 +134,13 @@
             app:currentProgress="0"
             app:placeHolder="@drawable/icon_header"
             android:layout_alignParentBottom="true" />
+        <ProgressBar
+            android:id="@+id/preloader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 </LinearLayout>

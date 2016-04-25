@@ -1,6 +1,7 @@
 package ru.bmstu.wundermusik.fragments;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -91,7 +92,9 @@ public class PlayerFragment extends Fragment {
         artistView.setText(currentTrack.getSinger().getName());
 
         durationView = (TextView) view.findViewById(R.id.track_duration);
-        durationView.setText(UtilSystem.getDuration(currentTrack.getDuration()));
+        if (durationView != null) {
+            durationView.setText(UtilSystem.getDuration(currentTrack.getDuration()));
+        }
 
         avatarView = (ImageView) view.findViewById(R.id.avatarView);
     }
@@ -121,7 +124,9 @@ public class PlayerFragment extends Fragment {
     private void redrawLayout () {
         titleView.setText(currentTrack.getTitle());
         artistView.setText(currentTrack.getSinger().getName());
-        durationView.setText(UtilSystem.getDuration(currentTrack.getDuration()));
+        if (durationView != null) {
+            durationView.setText(UtilSystem.getDuration(currentTrack.getDuration()));
+        }
 
         Picasso.with(getActivity())
                 .load(currentTrack.getSinger().getAvatarUrl())
@@ -186,6 +191,12 @@ public class PlayerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public enum ControlState {
