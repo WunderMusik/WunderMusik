@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#7f84d1</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="splashBackground">#303F9F</color>
+    <color name="splashBackground">#7f84d1</color>
     <color name="splashText">#000000</color>
 
     <color name="colorPrimaryLight">#b6b6b6</color>
@@ -15,7 +15,7 @@
     <color name="colorDivider">#B6B6B6</color>
     <color name="statusBarColor">#fbfbfd</color>
 
-    <color name="playerPrimaryDark">#cf36b174</color>
-    <color name="playerPrimaryLight">#cfa7dac1</color>
+    <color name="playerPrimaryDark">#eb706ab9</color>
+    <color name="playerPrimaryLight">#aa9b94e7</color>
     <color name="playerPrimaryFont">#FFFFFF</color>
 </resources>

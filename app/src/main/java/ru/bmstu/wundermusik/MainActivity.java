@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        if (savedInstanceState != null) {
+            trackList = (List<Track>) savedInstanceState.getSerializable(PlayerActivity.TRACK_LIST);
+        }
         ListView listView = (ListView)findViewById(R.id.track_list_view);
         mAdapter = new TrackListAdapter(this, trackList);
         listView.setAdapter(mAdapter);
@@ -105,5 +108,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable(PlayerActivity.TRACK_LIST, (Serializable) trackList);
     }
 }

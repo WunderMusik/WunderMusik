@@ -1,6 +1,7 @@
 package ru.bmstu.wundermusik.fragments;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,17 +14,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.util.concurrent.TimeUnit;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import co.mobiwise.library.MaskProgressView;
 import co.mobiwise.library.OnProgressDraggedListener;
 import ru.bmstu.wundermusik.PlayerActivity;
 import ru.bmstu.wundermusik.R;
+import ru.bmstu.wundermusik.events.PlayerStateChangeAnswer;
+import ru.bmstu.wundermusik.events.SeekEvent;
 import ru.bmstu.wundermusik.models.Track;
 import ru.bmstu.wundermusik.utils.UtilSystem;
 
@@ -40,6 +45,11 @@ public class PlayerFragment extends Fragment {
     private MaskProgressView maskProgressView;
     private TextView titleView;
     private TextView artistView;
+    private TextView durationView;
+    private ImageView avatarView;
+    private Track currentTrack;
+    private ProgressBar spinner;
+    private EventBus bus = EventBus.getDefault();
 
 
     /**
@@ -48,71 +58,145 @@ public class PlayerFragment extends Fragment {
     public PlayerFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        playerView = inflater.inflate(R.layout.fragment_player, container, false);
-        Bundle args = getArguments();
-
-        if (args != null) {
+        View view = inflater.inflate(R.layout.fragment_player, container, false);
+        playerView = view;
+        if (getArguments() != null) {
             currentState = ControlState.PLAY;
-            setTrackData((Track) args.getSerializable(PlayerActivity.CURRENT_TRACK));
-            maskProgressView = (MaskProgressView) playerView.findViewById(R.id.maskProgressView);
-            titleView = (TextView) playerView.findViewById(R.id.titleView);
-            artistView = (TextView) playerView.findViewById(R.id.artistView);
+            currentTrack = (Track) getArguments().getSerializable(PlayerActivity.CURRENT_TRACK);
         } else {
             UtilSystem.displayMessage(
                     playerView.findViewById(android.R.id.content),
                     getResources().getString(R.string.player_parameters_error)
             );
         }
-        return playerView;
+        spinner = (ProgressBar) view.findViewById(R.id.preloader);
+        spinner.setVisibility(View.VISIBLE);
+        initializeProgressBar(view);
+        initializeLayout(view);
+        return view;
     }
 
-    /**
-     * Метод, который по треку позволяет наполнить лейаут фрагмента плеера
-     * @param track - трек, данные которого будут использованы при наполнении фрагмента
-     */
-    public void setTrackData(Track track) {
-        titleView.setText(track.getTitle());
-        artistView.setText(track.getSinger().getName());
-        maskProgressView.setmMaxSeconds((int) TimeUnit.SECONDS.convert(track.getDuration(), TimeUnit.MILLISECONDS));
+    private void initializeProgressBar(View view) {
+        maskProgressView = (MaskProgressView) view.findViewById(R.id.maskProgressView);
+        maskProgressView.setmMaxSeconds((int) currentTrack.getDuration() / 1000);
+        maskProgressView.setOnProgressDraggedListener(new CustomProgressDraggedListener());
+    }
 
-        /**
-         * Асинхронная загрузка изображения в панели управления с помощью {@link Picasso Picasso}
-         */
-        final ImageView artistImage = (ImageView) playerView.findViewById(R.id.avatarView);
+    private void initializeLayout(View view) {
+        titleView = (TextView) view.findViewById(R.id.titleView);
+        titleView.setText(currentTrack.getTitle());
+
+        artistView = (TextView) view.findViewById(R.id.artistView);
+        artistView.setText(currentTrack.getSinger().getName());
+
+        durationView = (TextView) view.findViewById(R.id.track_duration);
+        if (durationView != null) {
+            durationView.setText(UtilSystem.getDuration(currentTrack.getDuration()));
+        }
+
+        avatarView = (ImageView) view.findViewById(R.id.avatarView);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    private class CustomProgressDraggedListener implements OnProgressDraggedListener {
+        @Override
+        public void onProgressDragged(int position) {
+            bus.post(new SeekEvent(position));
+        }
+
+        @Override
+        public void onProgressDragging(int position) {
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bus.register(this);
+    }
+
+    private void redrawLayout () {
+        titleView.setText(currentTrack.getTitle());
+        artistView.setText(currentTrack.getSinger().getName());
+        if (durationView != null) {
+            durationView.setText(UtilSystem.getDuration(currentTrack.getDuration()));
+        }
+
         Picasso.with(getActivity())
-                .load(track.getTrackImageUrl())
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                        maskProgressView.setCoverImage(bitmap);
-                        artistImage.setImageBitmap(bitmap);
-                    }
+                .load(currentTrack.getSinger().getAvatarUrl())
+                .into(avatarView);
 
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
-                        maskProgressView.setCoverImage(BitmapFactory.decodeResource(getActivity().getResources(),
-                                R.drawable.icon_header));
-                    }
+        maskProgressView.setmMaxSeconds((int) currentTrack.getDuration() / 1000);
+        Picasso.with(getActivity())
+            .load(currentTrack.getTrackImageUrl())
+            .into(new Target() {
+                @Override
+                public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                    maskProgressView.setCoverImage(bitmap);
+                }
 
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    }
-                });
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+                    maskProgressView.setCoverImage(
+                            BitmapFactory.decodeResource(
+                                    getActivity().getResources(), R.drawable.icon_header
+                            )
+                    );
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                }
+            });
     }
 
+    @Subscribe
     /**
-     * Установить текущее положение плеера в секундах
-     * @param position - положение в секундах
+     * Обработка различных ответов от плеера
+     * @param event - объект события {@link PlayerStateChangeAnswer PlayerStateChangeAnswer}
      */
-    public void setCurrentPosition (int position) {
-        maskProgressView.setmCurrentSeconds(position);
+    public void onEvent(PlayerStateChangeAnswer event) {
+        Log.i(TAG, event.getState().name());
+        Log.i(TAG, "Position = " + event.getPosition());
+        currentTrack = event.getTrack();
+        redrawLayout();
+
+        switch (event.getState()) {
+            case PREPARING:
+                spinner.setVisibility(View.VISIBLE);
+                break;
+            case STOPPED:
+                maskProgressView.stop();
+                setPlayerState(getActivity(), PlayerFragment.ControlState.PLAY);
+                break;
+            case PLAYING:
+                maskProgressView.setmCurrentSeconds(event.getPosition());
+                maskProgressView.start();
+                setPlayerState(getActivity(), PlayerFragment.ControlState.PAUSE);
+                spinner.setVisibility(View.GONE);
+                break;
+            case PAUSED:
+                maskProgressView.pause();
+                setPlayerState(getActivity(), PlayerFragment.ControlState.PLAY);
+                break;
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public enum ControlState {

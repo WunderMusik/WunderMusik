@@ -15,6 +15,7 @@ import java.util.List;
 
 import ru.bmstu.wundermusik.R;
 import ru.bmstu.wundermusik.models.Track;
+import ru.bmstu.wundermusik.utils.UtilSystem;
 
 /**
  * Реализация паттерна ViewHolder для хранения списка треков
@@ -78,27 +79,18 @@ public class TrackListAdapter extends BaseAdapter {
 
         holder.titleView.setText(track.getTitle());
         holder.singerView.setText(track.getSinger().getName());
-        holder.durationView.setText(getDuration(track.getDuration()));
+        holder.durationView.setText(UtilSystem.getDuration(track.getDuration()));
 
         Log.i("Singer", track.getSinger().getName());
         Log.i("Title", track.getTitle());
 
         Picasso.with(mContext)
-                .load(track.getTrackImageUrl())
+                .load(track.getSinger().getAvatarUrl())
                 .into(holder.trackImageView);
         return convertView;
     }
 
-    /**
-     * Форматирование продолжительности в милисекундах в формат mm:ss
-     * @param duration - продолжительность трека в милисекундах
-     */
-    private String getDuration (long duration) {
-        int total = (int) (duration / 1000);
-        int minutes = (total % 3600) / 60;
-        int seconds = total % 60;
-        return String.format("%02d:%02d", minutes, seconds);
-    }
+
 
     /**
      * Содержит информацию, из каких объектов View состоит отображаемый список

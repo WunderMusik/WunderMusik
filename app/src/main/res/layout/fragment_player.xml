@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ru.bmstu.wundermusik.fragments.PlayerFragment"
+    android:screenOrientation="portrait"
     android:background="@color/colorPrimaryDark">
 
     <include layout="@layout/track_list_item"/>
@@ -12,7 +13,6 @@
         android:id="@+id/maskProgressView"
         android:layout_width="@dimen/player_mask_view_width"
         android:layout_height="@dimen/player_mask_view_height"
-        android:layout_centerHorizontal="true"
         app:progressEmptyColor="@color/playerPrimaryDark"
         app:progressLoadedColor="@color/playerPrimaryLight"
         app:coverMaskColor="#80000000"
@@ -23,16 +23,31 @@
         app:maxProgress="40"
         app:currentProgress="0"
         app:placeHolder="@drawable/icon_header"
-        android:layout_below="@+id/layoutHeader" />
+        android:layout_below="@+id/layoutHeader"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <ProgressBar
+        android:id="@+id/preloader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/maskProgressView"
         android:background="@color/playerPrimaryDark"
-        android:layout_centerVertical="true"
-        >
+        android:layout_below="@+id/maskProgressView"
+        android:layout_alignParentBottom="true">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/separator_size"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/colorPrimaryDark"/>
         <Button
             android:id="@+id/buttonControl"
             android:layout_width="@dimen/player_button_size"
@@ -46,7 +61,7 @@
             android:id="@+id/buttonNext"
             android:layout_width="@dimen/player_button_size"
             android:layout_height="@dimen/player_button_size"
-            android:background="@drawable/ic_skip_next_white_48dp"
+            android:background="@drawable/button_next"
             android:layout_toRightOf="@+id/buttonControl"
             android:layout_marginLeft="@dimen/player_button_margin"
             android:layout_centerVertical="true"
@@ -56,7 +71,7 @@
             android:id="@+id/buttonPrevious"
             android:layout_width="@dimen/player_button_size"
             android:layout_height="@dimen/player_button_size"
-            android:background="@drawable/ic_skip_previous_white_48dp"
+            android:background="@drawable/button_prev"
             android:layout_toLeftOf="@+id/buttonControl"
             android:layout_marginRight="@dimen/player_button_margin"
             android:layout_centerVertical="true"

@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.ProgressBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,7 +50,11 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         bus.register(this);
-        trackList = (List<Track>) getIntent().getSerializableExtra(TRACK_LIST);
+        if (savedInstanceState != null) {
+            trackList = (List<Track>) savedInstanceState.getSerializable(PlayerActivity.TRACK_LIST);
+        } else {
+            trackList = (List<Track>) getIntent().getSerializableExtra(TRACK_LIST);
+        }
         int currentTrack = getIntent().getIntExtra(CURRENT_TRACK, 0);
 
         if (findViewById(R.id.fragment_container) != null) {
@@ -86,35 +93,11 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Subscribe
     /**
-     * Обработка различных ответов от плеера
-     * @param event - объект события {@link PlayerStateChangeAnswer PlayerStateChangeAnswer}
-     */
-    public void onEvent(PlayerStateChangeAnswer event) {
-        Log.i(TAG, event.getState().name());
-        PlayerFragment playerFragment = (PlayerFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_container);
-
-        if (playerFragment != null) {
-            switch (event.getState()) {
-                case PAUSED:
-                    playerFragment.setPlayerState(this, PlayerFragment.ControlState.PLAY);
-                    break;
-                case PLAYING:
-                    playerFragment.setPlayerState(this, PlayerFragment.ControlState.PAUSE);
-                    playerFragment.setCurrentPosition(event.getPosition());
-                    break;
-
-            }
-            playerFragment.setTrackData(event.getTrack());
-        }
-    }
-
-    @Subscribe
-    /**
      * Обработчик события ошибки от плеера
      */
     public void onEvent(PlayerError event) {
-        UtilSystem.displayMessage(findViewById(android.R.id.content), event.getMsg());
+//        UtilSystem.displayMessage(findViewById(android.R.id.content), event.getMsg());
+        Log.i(TAG, event.getMsg());
     }
 
     @Override
@@ -148,5 +131,11 @@ public class PlayerActivity extends AppCompatActivity {
         PlayerFragment playerFragment = new PlayerFragment();
         playerFragment.setArguments(args);
         return playerFragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable(PlayerActivity.TRACK_LIST, (Serializable) trackList);
     }
 }
