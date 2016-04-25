@@ -40,6 +40,7 @@ public class PlayerFragment extends Fragment {
     private MaskProgressView maskProgressView;
     private TextView titleView;
     private TextView artistView;
+    private TextView durationView;
 
 
     /**
@@ -78,8 +79,16 @@ public class PlayerFragment extends Fragment {
      * @param track - трек, данные которого будут использованы при наполнении фрагмента
      */
     public void setTrackData(Track track) {
+        titleView = (TextView) playerView.findViewById(R.id.titleView);
         titleView.setText(track.getTitle());
+
+        artistView = (TextView) playerView.findViewById(R.id.artistView);
         artistView.setText(track.getSinger().getName());
+
+        durationView = (TextView) playerView.findViewById(R.id.track_duration);
+        durationView.setText(UtilSystem.getDuration(track.getDuration()));
+
+        maskProgressView = (MaskProgressView) playerView.findViewById(R.id.maskProgressView);
         maskProgressView.setmMaxSeconds((int) TimeUnit.SECONDS.convert(track.getDuration(), TimeUnit.MILLISECONDS));
 
         /**
@@ -87,12 +96,15 @@ public class PlayerFragment extends Fragment {
          */
         final ImageView artistImage = (ImageView) playerView.findViewById(R.id.avatarView);
         Picasso.with(getActivity())
+                .load(track.getSinger().getAvatarUrl())
+                .into(artistImage);
+
+        Picasso.with(getActivity())
                 .load(track.getTrackImageUrl())
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
                         maskProgressView.setCoverImage(bitmap);
-                        artistImage.setImageBitmap(bitmap);
                     }
 
                     @Override
@@ -113,6 +125,13 @@ public class PlayerFragment extends Fragment {
      */
     public void setCurrentPosition (int position) {
         maskProgressView.setmCurrentSeconds(position);
+        maskProgressView.start();
+        Log.i(TAG, "Mask progress started " + position);
+    }
+
+    public void pauseMaskProgress () {
+        maskProgressView.pause();
+        Log.i(TAG, "Mask progress paused");
     }
 
     public enum ControlState {

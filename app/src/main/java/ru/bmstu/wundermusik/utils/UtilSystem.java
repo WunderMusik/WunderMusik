@@ -32,4 +32,15 @@ public class UtilSystem {
         Snackbar snackbar = Snackbar.make(messageParentView, message, Snackbar.LENGTH_LONG);
         snackbar.show();
     }
+
+    /**
+     * Форматирование продолжительности в милисекундах в формат mm:ss
+     * @param duration - продолжительность трека в милисекундах
+     */
+    public static String getDuration (long duration) {
+        int total = (int) (duration / 1000);
+        int minutes = (total % 3600) / 60;
+        int seconds = total % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
 }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.ProgressBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -93,17 +95,25 @@ public class PlayerActivity extends AppCompatActivity {
         Log.i(TAG, event.getState().name());
         PlayerFragment playerFragment = (PlayerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
-
+        ProgressBar preloader = (ProgressBar) findViewById(R.id.preloader);
         if (playerFragment != null) {
             switch (event.getState()) {
                 case PAUSED:
                     playerFragment.setPlayerState(this, PlayerFragment.ControlState.PLAY);
+                    playerFragment.pauseMaskProgress();
                     break;
                 case PLAYING:
                     playerFragment.setPlayerState(this, PlayerFragment.ControlState.PAUSE);
                     playerFragment.setCurrentPosition(event.getPosition());
+                    if (preloader != null) {
+                        preloader.setVisibility(View.GONE);
+                    }
                     break;
-
+                case PREPARING:
+                    if (preloader != null) {
+                        preloader.setVisibility(View.VISIBLE);
+                    }
+                    break;
             }
             playerFragment.setTrackData(event.getTrack());
         }
@@ -114,7 +124,8 @@ public class PlayerActivity extends AppCompatActivity {
      * Обработчик события ошибки от плеера
      */
     public void onEvent(PlayerError event) {
-        UtilSystem.displayMessage(findViewById(android.R.id.content), event.getMsg());
+//        UtilSystem.displayMessage(findViewById(android.R.id.content), event.getMsg());
+        Log.i(TAG, event.getMsg());
     }
 
     @Override

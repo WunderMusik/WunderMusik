@@ -184,7 +184,7 @@ public class MusicPlayer extends Service implements MediaPlayer.OnCompletionList
     private void changePlayerState(PlayerState newState) {
         this.playerState = newState;
         bus.post(new PlayerStateChangeAnswer(trackList.get(currentTrackPos), this.playerState,
-                mediaPlayer.getCurrentPosition() * 1000));
+                mediaPlayer.getCurrentPosition() / 1000));
     }
 
     /**
