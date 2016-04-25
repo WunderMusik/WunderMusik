@@ -8,8 +8,8 @@ public class Routes {
     /**
      * Секретные ключи
      */
-    public static final String CLIENT_ID = "d8578cce698b5417ede2f570586b2cf4";
-    public static final String CLIENT_SECRET = "c79ec17262472d2c957ea0b4b4759337";
+    public static final String CLIENT_ID = "114d53b3346a1205caad92e6a74a9214";
+    public static final String CLIENT_SECRET = "f88bdcf51c5aae6d0bdb2c5dafde871e";
 
     /**
      * Домен API

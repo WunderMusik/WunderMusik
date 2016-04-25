@@ -5,8 +5,9 @@ import org.json.JSONObject;
 
 import ru.bmstu.wundermusik.models.Singer;
 
-/**
- * Created by ali on 18.04.16.
+/***
+ * Реализация парсера представления исполнителя
+ * @author ali
  */
 public class SingerJsonParser extends SoundCloudJsonParser<Singer> {
     @Override

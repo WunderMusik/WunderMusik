@@ -7,8 +7,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ali on 18.04.16.
+/***
+ * Реализация интерфейса json парсера для api сервиса soundcloud.com
+ * @param <T> тип объекта, который планируется парсить
+ * @author ali
  */
 public abstract class SoundCloudJsonParser<T> implements JsonParser<T> {
     public List<T> parseMultipleObjects(String jsonStr) {

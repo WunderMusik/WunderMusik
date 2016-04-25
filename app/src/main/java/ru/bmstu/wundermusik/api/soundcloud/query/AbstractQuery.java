@@ -1,5 +1,6 @@
 package ru.bmstu.wundermusik.api.soundcloud.query;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import java.io.BufferedReader;
@@ -37,7 +38,7 @@ public abstract class AbstractQuery {
     public static HttpURLConnection openConnectionByURI(String uri, String method)
             throws IOException
     {
-        uri += ("client_id=" + Routes.CLIENT_ID);
+        uri = Uri.parse(uri).buildUpon().appendQueryParameter("client_id", Routes.CLIENT_ID).build().toString();
         URL url = new URL(uri);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(method);

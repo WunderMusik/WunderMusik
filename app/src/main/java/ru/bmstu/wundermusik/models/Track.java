@@ -2,8 +2,9 @@ package ru.bmstu.wundermusik.models;
 
 import java.io.Serializable;
 
-/**
- * Created by ali on 29.03.16.
+/***
+ * Модель трека
+ * @author ali
  */
 public class Track implements Serializable {
     // track info
@@ -16,7 +17,25 @@ public class Track implements Serializable {
     private String streamUrl;
     private Singer singer;
 
-    public Track(){}
+    /***
+     * Конструктор трека
+     * @param id уникальный идентификатор трека
+     * @param title название трека
+     * @param duration продолжительность песни
+     * @param format формат хранения данных (mp3 for example)
+     * @param contentSize размер файла песни, в формате указанном выше
+     * @param streamUrl url для поточного проигрывания музыки
+     * @param singer объект исполнителя песни
+     */
+    public Track(long id, String title, long duration, String format, long contentSize, String streamUrl, Singer singer) {
+        this.id = id;
+        this.title = title;
+        this.duration = duration;
+        this.format = format;
+        this.contentSize = contentSize;
+        this.streamUrl = streamUrl;
+        this.singer = singer;
+    }
 
     public long getId() {
         return id;
