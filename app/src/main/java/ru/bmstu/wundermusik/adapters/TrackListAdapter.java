@@ -67,7 +67,7 @@ public class TrackListAdapter extends BaseAdapter {
         Log.i("Title", track.getTitle());
         // Trigger the download of the URL asynchronously into the image view.
         Picasso.with(mContext)
-                .load(track.getSinger().getAvatarUrl())
+                .load(track.getTrackImageUrl())
                 .into(holder.trackImageView);
         return convertView;
     }

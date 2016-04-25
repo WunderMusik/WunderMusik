@@ -74,7 +74,7 @@ public class PlayerFragment extends Fragment {
         maskProgressView.setmMaxSeconds((int) TimeUnit.SECONDS.convert(track.getDuration(), TimeUnit.MILLISECONDS));
 
         Picasso.with(getActivity())
-                .load(track.getSinger().getAvatarUrl())
+                .load(track.getTrackImageUrl())
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {

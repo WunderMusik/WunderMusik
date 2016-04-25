@@ -1,5 +1,7 @@
 package ru.bmstu.wundermusik.models;
 
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 
 /***
@@ -15,7 +17,10 @@ public class Track implements Serializable {
     private String format;
     private long contentSize;
     private String streamUrl;
-    private Singer singer;
+    private Singer singer; // not null
+    // track image info
+    @Nullable
+    private String trackImageUrl;
 
     /***
      * Конструктор трека
@@ -26,8 +31,9 @@ public class Track implements Serializable {
      * @param contentSize размер файла песни, в формате указанном выше
      * @param streamUrl url для поточного проигрывания музыки
      * @param singer объект исполнителя песни
+     * @param trackImageUrl url изображения песни
      */
-    public Track(long id, String title, long duration, String format, long contentSize, String streamUrl, Singer singer) {
+    public Track(long id, String title, long duration, String format, long contentSize, String streamUrl, Singer singer, String trackImageUrl) {
         this.id = id;
         this.title = title;
         this.duration = duration;
@@ -35,6 +41,7 @@ public class Track implements Serializable {
         this.contentSize = contentSize;
         this.streamUrl = streamUrl;
         this.singer = singer;
+        this.trackImageUrl = trackImageUrl;
     }
 
     public long getId() {
@@ -91,5 +98,15 @@ public class Track implements Serializable {
 
     public void setSinger(Singer singer) {
         this.singer = singer;
+    }
+
+    public String getTrackImageUrl() {
+        if (trackImageUrl == null)
+            return singer.getAvatarUrl();
+        return trackImageUrl;
+    }
+
+    public void setTrackImageUrl(String trackImageUrl) {
+        this.trackImageUrl = trackImageUrl;
     }
 }
