@@ -84,7 +84,7 @@ public class TrackListAdapter extends BaseAdapter {
         Log.i("Title", track.getTitle());
 
         Picasso.with(mContext)
-                .load(track.getSinger().getAvatarUrl())
+                .load(track.getTrackImageUrl())
                 .into(holder.trackImageView);
         return convertView;
     }

@@ -87,7 +87,7 @@ public class PlayerFragment extends Fragment {
          */
         final ImageView artistImage = (ImageView) playerView.findViewById(R.id.avatarView);
         Picasso.with(getActivity())
-                .load(track.getSinger().getAvatarUrl())
+                .load(track.getTrackImageUrl())
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {

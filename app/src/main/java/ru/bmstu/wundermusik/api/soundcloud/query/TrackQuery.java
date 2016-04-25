@@ -1,5 +1,6 @@
 package ru.bmstu.wundermusik.api.soundcloud.query;
 
+import android.net.Uri;
 import android.os.ResultReceiver;
 
 import java.io.BufferedReader;
@@ -19,12 +20,12 @@ public class TrackQuery extends ResourceQuery {
     public static final String trackUri = Routes.BASE_API_URI + Routes.TRACK;
 
     public static void execute(ResultReceiver callback, long trackId) {
-        String route = trackUri + "/" + Long.toString(trackId) + "?";
+        String route = Uri.parse(trackUri).buildUpon().path(Long.toString(trackId)).build().toString();
         ResourceQuery.execute(callback, route);
     }
 
     public static void execute(ResultReceiver callback, String trackName) {
-        String route = trackUri + "?q=" + trackName + "&";
+        String route = Uri.parse(trackUri).buildUpon().appendQueryParameter("q", trackName).build().toString();
         ResourceQuery.execute(callback, route);
     }
 }
