@@ -1,0 +1,11 @@
+ru.bmstu.wundermusik
+ru.bmstu.wundermusik.adapters
+ru.bmstu.wundermusik.api.soundcloud
+ru.bmstu.wundermusik.api.soundcloud.query
+ru.bmstu.wundermusik.api.soundcloud.utils
+ru.bmstu.wundermusik.events
+ru.bmstu.wundermusik.fragments
+ru.bmstu.wundermusik.models
+ru.bmstu.wundermusik.models.parsers
+ru.bmstu.wundermusik.musicplayer
+ru.bmstu.wundermusik.utils
